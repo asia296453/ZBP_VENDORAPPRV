@@ -1,0 +1,24 @@
+<mvc:View controllerName="zbpvendorapprv.controller.InterfaceList"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="interfaceListPage" title="Customer Interface Requests" showNavButton="true" navButtonPress=".onNavBack">
+        <content>
+            <Table id="customerTable" items="{/CustomerMasterSet}" class="sapUiResponsiveMargin">
+                <columns>
+                    <Column><Text text="Customer ID" /></Column>
+                    <Column><Text text="Customer Name" /></Column>
+                    <Column><Text text="City" /></Column>
+                </columns>
+                <items>
+                   <ColumnListItem type="Navigation" press=".onPressRecord">
+    <cells>
+        <Text text="{RecordNo}" />
+        <Text text="{Name1}" />
+        <Text text="{City}" />
+    </cells>
+</ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

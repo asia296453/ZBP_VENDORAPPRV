@@ -1,0 +1,396 @@
+<mvc:View controllerName="zbpvendorapprv.controller.ProcessInterface"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:upload="sap.m.upload"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    
+    <Page id="processInterfacePage" title="Process from Interface" showNavButton="true" navButtonPress=".onNavBack">
+        <content>
+            <IconTabBar id="processTabs" expanded="true" class="sapUiResponsiveContentPadding">
+                <items>
+                    
+                    <!-- TAB 1: GENERAL DATA -->
+                    <IconTabFilter text="General Data" key="general">
+                        <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                            <core:Title text="" />
+                            <Label text="Grouping" required="true" />
+                            <Input value="{/Grouping}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="External Number" />
+                            <Input value="{/ExternalNumber}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Search Term 1" />
+                            <Input value="{/SearchTerm1}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Search Term 2" />
+                            <Input value="{/SearchTerm2}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Title Key" />
+                            <Input value="{/TitleKey}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Name 1" required="true" />
+                            <Input value="{/Name1}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Name 2" required="true" />
+                            <Input value="{/Name2}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Name 3" />
+                            <Input value="{/Name3}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Name 4" />
+                            <Input value="{/Name4}" editable="{ui>/isEditable}" />
+
+                            <core:Title text="" />
+                            <Label text="Building Code" required="true" />
+                            <Input value="{/BuildingCode}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Street" required="true" />
+                            <Input value="{/Street}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="District" required="true" />
+                            <Input value="{/District}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="City" required="true" />
+                            <Input value="{/City}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Postal Code" required="true" />
+                            <Input value="{/PostalCode}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Region" required="true" />
+                            <Input value="{/Region}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Country" required="true" />
+                            <Input value="{/Country}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Structure Group" />
+                            <Input value="{/StructureGroup}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Language" />
+<Input value="{/Language}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Telephone" />
+                            <Input value="{/Telephone}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="E-Mail Defined" />
+                            <CheckBox selected="{/Email}" enabled="{ui>/isEditable}" />
+                            
+                            <Label text="Fax" />
+                            <Input value="{/Fax}" editable="{ui>/isEditable}" />
+                        </form:SimpleForm>
+                    </IconTabFilter>
+
+                    <!-- TAB 2: SALES DATA -->
+                    <IconTabFilter text="Sales Data" key="sales">
+                        <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                            <core:Title text=""/>
+                            <Label text="Sales Org." required="true" />
+                            <Input value="{/SalesOrg}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Distr. Channel" required="true" />
+                            <Input value="{/DistChannel}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Division" required="true" />
+                            <Input value="{/Division}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Cust.Pric.Proc." />
+                            <Input value="{/CustPricProc}" editable="{ui>/isEditable}" />
+
+                            <Label text="Customer Group" required="true" />
+                            <Input value="{/SalesCustomerGroup}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Sales District" required="true" />
+                            <Input value="{/SalesDistrict}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Incoterms" required="true" />
+                            <Input value="{/Incoterms}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Incoterms 2" required="true" />
+                            <Input value="{/Incoterms2}" editable="{ui>/isEditable}"  />
+                            
+                            <core:Title text=""/>
+                            <Label text="Shipping Condition" />
+                            <Input value="{/ShippingCondition}" editable="{ui>/isEditable}" />
+
+                            <Label text="Currency" />
+                            <Input value="{/Currency}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="AccAssmtGrpCust" required="true" />
+                            <Input value="{/AccAssmtGrpCust}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                           <Label text="Payment Terms" required="true"  />
+<Input value="{/PytTerms}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Deliver.Plant" />
+                            <Input value="{/DeliverPlant}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Sales Group" required="true" />
+                            <Input value="{/SalesGroup}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Sales Office" required="true" />
+                            <Input value="{/SalesOffice}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Item proposal" />
+                            <Input value="{/ItemProposal}" editable="{ui>/isEditable}" />
+
+                            <Label text="Customer Grp 1" required="true" />
+                            <Input value="{/CustomerGrp1}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Customer Grp 2" required="true" />
+                            <Input value="{/CustomerGrp2}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Customer Grp 3" required="true" />
+                            <Input value="{/CustomerGrp3}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Customer Grp 4" />
+                            <Input value="{/CustomerGrp4}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Customer Grp 5" />
+                            <Input value="{/CustomerGrp5}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                        </form:SimpleForm>
+                    </IconTabFilter>
+
+                    <!-- TAB 3: COMPANY CODE DATA -->
+                    <IconTabFilter text="Company Code Data" key="companyCode">
+                        <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                            <core:Title text="" />
+                            <Label text="Company Code" required="true" />
+                            <Input value="{/CompanyCode}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Recon Accout" required="true" />
+                            <Input value="{/ReconAccout}" editable="{ui>/isEditable}"  showValueHelp="true" valueHelpRequest=".onValueHelpRequest"/>
+                            
+                            <Label text="Head Office" />
+                            <Input value="{/HeadOffice}" editable="{ui>/isEditable}" />
+
+                            <Label text="Sort Key" required="true" />
+                            <Input value="{/SortKey}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Planning Group" required="true" />
+                            <Input value="{/PlanningGroup}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Previous Acc number" />
+                            <Input value="{/PreviousAccnumber}" editable="{ui>/isEditable}" />
+
+                            <Label text="Payment Terms " required="true" />
+                            <Input value="{/PaymenttermsC}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest"  />
+
+                            <Label text="Record Paymnt History" />
+                            <CheckBox selected="{/RecordPaymntHistory}" enabled="{ui>/isEditable}" />
+
+                            <Label text="Payment method" />
+                            <Input value="{/PaymentMethod}" editable="{ui>/isEditable}" />
+
+                            <Label text="House Bank" />
+                            <Input value="{/HouseBank}" editable="{ui>/isEditable}" />
+
+                            <core:Title text="" />
+                            <Label text="Dunning Procedure" />
+                            <Input value="{/DunningProcedure}" editable="{ui>/isEditable}" />
+
+                            <Label text="Accounting Clerk" />
+                            <Input value="{/AccountingClerk}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <Label text="Policy Number" />
+                            <Input value="{/PolicyNumber}" editable="{ui>/isEditable}" />
+
+                            <Label text="Institution Number" />
+                            <Input value="{/InstitutionNumber}" editable="{ui>/isEditable}" />
+
+                            <Label text="Amount Insured" />
+                            <Input value="{/AmountInsured}" editable="{ui>/isEditable}" />
+
+                            <Label text="Valid To" />
+                            <DatePicker value="{/ValidTo}" editable="{ui>/isEditable}" displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                            <Label text="Lead Months" />
+                            <Input value="{/LeadMonths}" editable="{ui>/isEditable}" />
+
+                            <Label text="Deductible" />
+                            <Input value="{/Deductible}" editable="{ui>/isEditable}" />
+
+                            <Label text="Clrg with vend." />
+                            <CheckBox selected="{/ClrgWithVend}" enabled="{ui>/isEditable}" />
+                        </form:SimpleForm>
+                    </IconTabFilter>
+
+                    <!-- TAB 4: CERTIFICATES -->
+                    <IconTabFilter text="Certificates" key="certificates">
+                        <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                            <core:Title text="" />
+                             <!-- <Label text="Bus. Partner" />-->
+                              <!--<Input value="{/BusPartner}" editable="{ui>/isEditable}" />-->
+                            
+                            <Label text="Country/Reg." />
+                            <Input value="{/CountryComp}" editable="{ui>/isEditable}" />
+
+                            <Label text="Certificate ID" />
+                            <Input value="{/CertificateID}" editable="{ui>/isEditable}" />
+
+                            <Label text="Certificate No." />
+                            <Input value="{/CertificateNo}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Region" />
+                            <Input value="{/RegionCity}" editable="{ui>/isEditable}" />
+
+                            <Label text="Valid From" />
+                            <DatePicker value="{/CreditValidFrom}" editable="{ui>/isEditable}" displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                            <Label text="Valid To" />
+                            <DatePicker value="{/CreditValidTo}" editable="{ui>/isEditable}" displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                            <Label text="Cert. Stat." />
+                            <Input value="{/CertStat}" editable="{ui>/isEditable}" />
+
+                            <Label text="Main Cert." />
+                            <Input value="{/MainCert}" editable="{ui>/isEditable}" />
+                            
+                            <core:Title text="" />
+                            <Label text="Exemption Type" />
+                            <Input value="{/ExemptionType}" editable="{ui>/isEditable}" />
+
+                            <Label text="Exempt Reason" />
+                            <Input value="{/ExemptReason}" editable="{ui>/isEditable}" placeholder="Required if Type = M" />
+
+                            <Label text="Date of Issue" />
+                            <DatePicker value="{/DateOfIssue}" editable="{ui>/isEditable}" displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                            <Label text="Description 1" />
+                            <Input value="{/Description1}" editable="{ui>/isEditable}" />
+
+                            <Label text="Description 2" />
+                            <Input value="{/Description2}" editable="{ui>/isEditable}" />
+
+                            <Label text="Date 1" />
+                            <DatePicker value="{/Date1}" editable="{ui>/isEditable}" displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                            <Label text="Date 2" />
+                            <DatePicker value="{/Date2}" editable="{ui>/isEditable}" displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                            <Label text="Additional No.1" />
+                            <Input value="{/AdditionalNo1}" editable="{ui>/isEditable}" />
+
+                            <Label text="Additional No.2" />
+                            <Input value="{/AdditionalNo2}" editable="{ui>/isEditable}" />
+                        </form:SimpleForm>
+                    </IconTabFilter>
+
+                    <!-- TAB 5: CREDIT -->
+                    <IconTabFilter text="Credit" key="credit">
+                        <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                            <core:Title text="" />
+                            <Label text="Check Rule" required="true" />
+                            <Input value="{/CheckRule}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Rules" required="true" />
+                            <Input value="{/Rules}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Risk Class" required="true" />
+                            <Input value="{/RiskClass}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Credit Group" required="true" />
+                            <Input value="{/CreditGroup}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+
+                            <core:Title text="" />
+                            <Label text="Bus. Partner" />
+                            <Input value="{/CreditBusPartner}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Credit Segment" required="true" />
+                            <Input value="{/CreditSegment}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Credit Limit" />
+                            <Input value="{/CreditLimit}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Block in Cr. Mgt" />
+                            <CheckBox selected="{/BlockInCrMgt}" enabled="{ui>/isEditable}" />
+                            
+                            <Label text="Valid To" />
+                            <DatePicker value="{/LimitValidTo}" displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Credit Analyst" />
+                            <Input value="{/CreditAnalyst}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Customer Group" />
+                            <Input value="{/CustomerGroup}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Resubmission On" />
+                            <DatePicker value="{/ResubmissionOn}" displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Calculated" />
+                            <Input value="{/Calculated}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Special Attention" />
+                            <CheckBox selected="{/SpecialAttention}" enabled="{ui>/isEditable}" />
+                            
+                            <Label text="Block Reason" />
+                            <Input value="{/BlockReason}" editable="{ui>/isEditable}" />
+                        </form:SimpleForm>
+                    </IconTabFilter>
+
+                    <!-- TAB 6: COLLECTION -->
+                    <IconTabFilter text="Collection" key="collection">
+                        <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                            <core:Title text="" />
+                            <Label text="Collection Prof." required="true"  />
+                            <Input value="{/CollectionProf}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <core:Title text="" />
+                            <Label text="Segment" />
+                            <Input value="{/Segment}" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Created On" />
+                            <DatePicker value="{/CreatedOn}" displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" editable="{ui>/isEditable}" />
+                            
+                            <Label text="Collection Group" required="true" />
+                            <Input value="{/CollectionGroup}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                            
+                            <Label text="Specialist" required="true" />
+                            <Input value="{/Specialist}" editable="{ui>/isEditable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" />
+                        </form:SimpleForm>
+                    </IconTabFilter>
+
+                    <!-- TAB 7: ATTACHMENTS & COMMENTS -->
+                    <IconTabFilter text="Attachments &amp; Comments" key="attachments">
+                        <VBox class="sapUiSmallMargin">
+                            
+                            <!-- Comments Section -->
+                            <Title text="Additional Notes / Comments" level="H3" class="sapUiTinyMarginBottom" />
+                            <TextArea 
+                                value="{/Comments}" 
+                                editable="{ui>/isEditable}" 
+                                rows="5" 
+                                width="100%" 
+                                placeholder="Enter any additional comments, justifications, or notes here..." 
+                                class="sapUiMediumMarginBottom" />
+
+                            <!-- Attachments Section -->
+                            <Title text="Upload Documents" level="H3" class="sapUiTinyMarginBottom" />
+                            <upload:UploadSet
+                                id="processUploader"
+                                multiple="true"
+                                instantUpload="true"
+                                uploadEnabled="{ui>/isEditable}"
+                                beforeUploadStarts=".onBeforeUploadStarts"
+                                uploadCompleted=".onUploadCompleted"
+                                afterItemRemoved=".onFileDeleted"
+                                noDataText="Drop files here or use the Add button">
+                            </upload:UploadSet>    
+                        </VBox>
+                    </IconTabFilter>
+                    
+                </items>
+            </IconTabBar>
+        </content>
+        
+        <footer>
+            <Toolbar>
+                <Text text="Request ID: {/RecordNo}" class="sapUiTinyMarginBegin" />
+                <ToolbarSpacer />
+                
+                <Button text="Edit Record" type="Transparent" press=".onEdit" visible="{= !${ui>/isEditable} }" />
+                <Button text="Submit" type="Emphasized" press=".onSubmit" />
+                <Button text="Cancel" type="Transparent" press=".onNavBack" />
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>

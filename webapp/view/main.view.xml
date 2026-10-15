@@ -1,0 +1,45 @@
+<mvc:View controllerName="zbpvendorapprv.controller.main"
+    xmlns:mvc="sap.ui.core.mvc"
+     xmlns:core="sap.ui.core" 
+      xmlns:f="sap.ui.layout.form"
+    xmlns="sap.m">
+      <App id="app">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <VBox class="sapUiMediumMargin" visible="{= ${MyInbox>/isVisible} === false }">
+                <Button 
+                    text="Create New Supplier" 
+                    press=".onCreateNewRequest" 
+                    type="Emphasized"
+                    width="250px"
+                    class="sapUiSmallMarginBottom" />
+                <Button 
+                    text="Extend existing Supplier" 
+                    press="onextendSupplier" 
+                    type="Emphasized"
+                    width="250px"
+                    class="sapUiSmallMarginBottom" />
+
+                <Button 
+                    text="Change Supplier" 
+                    press="onchangeSupplier" 
+                    type="Emphasized"
+                    width="250px"
+                    class="sapUiSmallMarginBottom" />
+
+                <Button 
+                    text="Display Supplier Requests" 
+                    press="onpressdisplaysupplier" 
+                    type="Emphasized"
+                    width="250px"
+                    class="sapUiSmallMarginBottom" />
+
+            </VBox>
+
+            <f:SimpleForm editable="true" layout="ResponsiveGridLayout" visible="{MyInbox>/isVisible}">
+							<core:Fragment fragmentName="zbpvendorapprv.fragment.vendor" type="XML"/>	
+			</f:SimpleForm>	
+        </content>
+    </Page>
+      </App>
+</mvc:View>

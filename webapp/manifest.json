@@ -1,0 +1,184 @@
+{
+  "_version": "1.60.0",
+  "sap.app": {
+    "id": "zbpvendorapprv",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.31.1",
+      "toolsId": "1e182922-ab80-4913-b591-1fb75e267d7d"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZBP_VENDOR_APPROVAL_SRV/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "customerDisplay": {
+          "semanticObject": "ZSMOBJ_ZBPVENDORAPPRV",
+          "action": "display",
+          "title": "Manage Supplier Creation/Change Request"
+          
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.120.30",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "zbpvendorapprv.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay"
+        }
+      },
+       "odata1": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "zbpvendorapprv.view",
+        "async": true,
+        "viewPath": "zbpvendorapprv.view"
+      },
+     "routes": [
+        {
+          "name": "ProcessInterfaceRoute",
+          "pattern": "ProcessInterface/{reqId}", 
+          "target": "TargetProcessInterface"
+        },
+        {
+          "name": "Routemain",
+          "pattern": ":?query:",
+          "target": [
+            "Targetmain"
+          ]
+        },
+        {
+          "name": "CreateRequestRoute",
+          "pattern": "createRequest",
+          "target": [
+            "TargetCreateRequest"
+          ]
+        },
+        {
+          "name": "ChangeSupplier",
+          "pattern": "ChangeSupplier",
+          "target": [
+            "TargetChangeSupplier"
+          ]
+        },
+        {
+          "name": "ExtendSupplier",
+          "pattern": "ExtendSupplier",
+          "target": [
+            "TargetExtendSupplier"
+          ]
+        },
+        {
+        "name": "InterfaceListRoute",
+        "pattern": "interfaceList",
+        "target": [
+            "TargetInterfaceList"
+        ]
+    }
+      ],
+      "targets": {
+        "Targetmain": {
+          "id": "main",
+          "name": "main"
+        },
+        "TargetCreateRequest": {
+          "id": "createRequest",
+          "name": "CreateRequest"
+        },
+        "TargetProcessInterface": {
+          "id": "processInterface",
+          "name": "ProcessInterface"
+        },
+        "TargetInterfaceList": {
+        "id": "interfaceList",
+        "name": "InterfaceList"
+        },
+        "TargetChangeSupplier": {
+            "name": "ChangeSupplier"
+        },
+        "TargetExtendSupplier": {
+            "name": "ExtendSupplier"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "zbpvendorapprv.view.main",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}
