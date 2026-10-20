@@ -1,24 +1,50 @@
 <mvc:View controllerName="zbpvendorapprv.controller.InterfaceList"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="interfaceListPage" title="Customer Interface Requests" showNavButton="true" navButtonPress=".onNavBack">
+    xmlns="sap.m"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable">
+    <Page id="interfaceListPage" title="Vendor Interface Requests" showNavButton="true" navButtonPress=".onNavBack">
         <content>
-            <Table id="customerTable" items="{/CustomerMasterSet}" class="sapUiResponsiveMargin">
-                <columns>
-                    <Column><Text text="Customer ID" /></Column>
-                    <Column><Text text="Customer Name" /></Column>
-                    <Column><Text text="City" /></Column>
-                </columns>
-                <items>
-                   <ColumnListItem type="Navigation" press=".onPressRecord">
-    <cells>
-        <Text text="{RecordNo}" />
-        <Text text="{Name1}" />
-        <Text text="{City}" />
-    </cells>
-</ColumnListItem>
-                </items>
-            </Table>
+<smartFilterBar:SmartFilterBar
+    id="smartFilterBar"
+    entitySet="WorkflowStatusSet"
+    persistencyKey="WorkflowFilter"
+    useToolbar="true">
+
+    <smartFilterBar:controlConfiguration>
+
+        <smartFilterBar:ControlConfiguration
+            key="RequestNumber"
+            label="Request Number"
+            visibleInAdvancedArea="true">
+
+            <smartFilterBar:customControl>
+
+                <Input
+                    id="idRequestNumber"
+                    placeholder="Enter Request Number"/>
+
+            </smartFilterBar:customControl>
+
+        </smartFilterBar:ControlConfiguration>
+
+    </smartFilterBar:controlConfiguration>
+
+</smartFilterBar:SmartFilterBar>
+
+            <smartTable:SmartTable
+    id="smartTable"
+    entitySet="WorkflowStatusSet"
+    smartFilterId="smartFilterBar"
+    tableType="Table"
+    enableAutoBinding="true"
+    useVariantManagement="true"
+    useTablePersonalisation="true"
+    showRowCount="true"
+    persistencyKey="WorkflowTable"
+    beforeRebindTable="onBeforeRebindTable"
+  initiallyVisibleFields="RequestNumber,Partner,RequestBy,RequestedDate,RequestedTime,WFStatus"/>   
+
         </content>
     </Page>
 </mvc:View>

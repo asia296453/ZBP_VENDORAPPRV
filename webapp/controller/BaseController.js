@@ -289,6 +289,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                             oJsonData.Status = 'DRAFT';
                         }
 
+                        if (oMetadata[i].name === "ContactPerson") {
+                            if (oJsonData.Grouping !== undefined && oJsonData.Grouping === "") {
+                                oJsonData.Grouping = 'ZCP1';
+                            }
+                        }
+
+                        // if (oMetadata[i].name === "Certificates") {
+                        //     if (oJsonData.CreditValidTo !== undefined ) {
+                        //         oJsonData.CreditValidTo = 'ZCP1';
+                        //     }
+                        // }
+
                         if (oMetadata[i].name === "BankData"
                             || oMetadata[i].name === "IdentifiNumbers"
                             || oMetadata[i].name === "TaxNumbersData"
@@ -296,9 +308,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                             || oMetadata[i].name === "ContactPerson") {
                             var oarr = [];
                             oarr.push(oJsonData);
+
+
                             // oarr.push(JSON.parse(JSON.stringify(oJsonData)));
                             this.getOwnerComponent().getModel("dataModel").setProperty("/" + oMetadata[i].name, oarr);
                             this.getOwnerComponent().getModel("dataModelCpy").setProperty("/" + oMetadata[i].name, JSON.parse(JSON.stringify(oarr)));
+
+                            if (oMetadata[i].name === "BankData") {
+                                this.getOwnerComponent().getModel("dataModel").setProperty("/ContactBankData", JSON.parse(JSON.stringify(oarr)));
+                                this.getOwnerComponent().getModel("dataModelCpy").setProperty("/ContactBankData", JSON.parse(JSON.stringify(oarr)));
+
+                            }
+
                         } else {
                             this.getOwnerComponent().getModel("dataModel").setProperty("/" + oMetadata[i].name, oJsonData);
                             this.getOwnerComponent().getModel("dataModelCpy").setProperty("/" + oMetadata[i].name, JSON.parse(JSON.stringify(oJsonData)));
@@ -340,6 +361,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 "Region": { set: "/RegionF4Set", key: "Region", returnProperty: "Region", filterBy: { field: "Country", filterProperty: "Country", optional: true, fielddesc: "" }, model: "IdentifiNumbers", fielddesc: "RegionDesc" },
                 "Country1": { set: "/CountryF4Set", key: "Country", fielddesc: "CountryDesc" },
                 "Country": { set: "/CountryF4Set", key: "Country", model: "IdentifiNumbers", fielddesc: "CountryDesc" },
+                "Region2": { set: "/RegionF4Set", key: "Region", returnProperty: "Region", filterBy: { field: "Country", filterProperty: "Country", optional: true, fielddesc: "" }, model: "ContactPerson", fielddesc: "RegionDesc" },
+                "Country2": { set: "/CountryF4Set", key: "Country", model: "ContactPerson", fielddesc: "CountryDesc" },
                 "BankCountry": { set: "/CountryF4Set", key: "Country", "returnProperty": "Country", model: "BankData", fielddesc: "BankCountryDesc" },
                 "StructureGroup": { set: "/StructureGroupF4Set", key: "StructureGroup", returnProperty: "StructurGroup", fielddesc: "StructurGroupDesc" },
                 "Language": { set: "/LanguageF4Set", key: "Language", fielddesc: "LanguageDesc" },
@@ -367,7 +390,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 "RequestNumber": { set: "/RequestNumberF4Set", key: "RequestNumber", fielddesc: "" },
                 "Calculation": { set: "/SchemaF4Set", key: "Schema", returnProperty: "Schema", model: "PurchaseOrgData", fielddesc: "CalculationDesc" },
                 "Vendor": { set: "/VendorF4Set", key: "Vendor", fielddesc: "Name", description: "Name" },
-                "Contact": { set: "/PartnerF4Set", key: "Contact", returnProperty: "Partner" }
+                "Contact": { set: "/PartnerF4Set", key: "Contact", returnProperty: "Partner", description: "Name", model: "ContactPerson", fielddesc: "PartnerFunctionDesc" },
+                "Partner": { set: "/PartnerF4Set", key: "Contact", returnProperty: "Partner", description: "Name", model: "ContactPerson", fielddesc: "PartnerFunctionDesc" },
+                "Authority": { set: "/AuthorityF4Set", key: "Authority", returnProperty: "Authority", model: "ContactPerson", fielddesc: "AuthorityDesc" },
+                "Department": { set: "/DepartmentF4Set", key: "Department", returnProperty: "Department", model: "ContactPerson", fielddesc: "DepartmentDesc" },
+                "Department": { set: "/DepartmentF4Set", key: "Department", returnProperty: "Department", model: "ContactPerson", fielddesc: "DepartmentDesc" },
+                "PartnerFunction": { set: "/FunctionF4Set", key: "PartnerFunction", returnProperty: "PartnerFunction", model: "ContactPerson", fielddesc: "PartnerFunctionDesc" },
+                "RelType": { set: "/RelTypeF4Set", key: "RelType", returnProperty: "RelKind", model: "ContactPerson", fielddesc: "RelTypeDesc" },
+                "Vip": { set: "/VipF4Set", key: "Vip", returnProperty: "Vip", model: "ContactPerson", fielddesc: "VipDesc" }
             };
 
             return oF4Mapping;
@@ -626,10 +656,17 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
         getDescription: function (oresponse) {
             debugger;
             var aInitialFilters = [];
+            var obank = [];
+            var ocontactbank = [];
             if (oresponse.BankDetails.results.length > 0) {
                 oresponse.BankDetails.results.forEach(r => {
                     if (r.Indicator !== undefined && r.Indicator === "") {
                         r.Indicator = false;
+                    }
+                    if (r.Type === "C") {
+                        ocontactbank.push(r);
+                    } else {
+                        obank.push(r);
                     }
                 })
             }
@@ -644,7 +681,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                     oresponse.PurchaseOrg.results[0].Indicator = false;
                 }
             } else {
-                oresponse.PurchaseOrg.results = this.getModel("dataModelCpy").getData().PurchaseOrg;
+                var oprg = [];
+                oprg.push(this.getModel("dataModelCpy").getData().PurchaseOrgData);
+                oresponse.PurchaseOrg.results = oprg;//this.getModel("dataModelCpy").getData().PurchaseOrgData;
             }
 
             if (oresponse.Certicates.results.length > 0) {
@@ -693,7 +732,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
             }
             this.getOwnerComponent().getModel("dataModel").setProperty("/VendorCreate", oresponse);
             this.getOwnerComponent().getModel("dataModel").setProperty("/CompanyCodeData", oresponse.CompanyCode.results[0]);
-            this.getOwnerComponent().getModel("dataModel").setProperty("/BankData", oresponse.BankDetails.results);
+            this.getOwnerComponent().getModel("dataModel").setProperty("/BankData", obank);
+            this.getOwnerComponent().getModel("dataModel").setProperty("/ContactBankData", ocontactbank);
             this.getOwnerComponent().getModel("dataModel").setProperty("/PurchaseOrgData", oresponse.PurchaseOrg.results[0]);
             this.getOwnerComponent().getModel("dataModel").setProperty("/IdentifiNumbers", oresponse.IdentficationNumbers.results);
             this.getOwnerComponent().getModel("dataModel").setProperty("/TaxNumbersData", oresponse.TaxNumbers.results);
@@ -710,8 +750,17 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 var svalue = "";
                 var smodel = "VendorCreate";
 
+                // if (sField === "Partner") {
+                //     debugger;
+                // }
+
+
                 if (sField === 'Country1' || sField === 'Region1') {
                     sField = sField.split("1")[0];
+                    skey = sField;
+                }
+                if (sField === 'Country2' || sField === 'Region2') {
+                    sField = sField.split("2")[0];
                     skey = sField;
                 }
 
@@ -720,8 +769,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                         smodel = ofields.model;
                     }
 
-
-                    if (smodel === "BankData" || smodel === "IdentifiNumbers" || smodel === "TaxNumbersData" || smodel === "Certificates") {
+                    if (smodel === "ContactPerson") {
+                        debugger;
+                    }
+                    if (smodel === "BankData" || smodel === "IdentifiNumbers" || smodel === "TaxNumbersData" || smodel === "Certificates" || smodel === "ContactPerson") {
                         for (var idx = 0; idx < this.getOwnerComponent().getModel("dataModel").getData()[smodel].length; idx++) {
                             if (this.getOwnerComponent().getModel("dataModel").getData()[smodel][idx][skeyDesc] !== undefined) {
                                 if (this.getOwnerComponent().getModel("dataModel").getData()[smodel][idx][skey] !== "" && this.getOwnerComponent().getModel("dataModel").getData()[smodel][idx][skeyDesc] !== "") {
@@ -852,6 +903,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
             oPayload.Certicates = oRawData.Certificates;
             oPayload.ContactDetails = oRawData.ContactPerson;
 
+            //begin bank data from contacts
+            oRawData.ContactBankData.forEach((r, idbx) => {
+                r.Type = "C";
+                if (r.BankCountry !== '' && r.BankKey != "") {
+                    oPayload.BankDetails.push(r);
+                }
+            })
+            debugger;
+            // oPayload.BankDetails.concat(oRawData.ContactBankData);
+            //begin bank data from contacts
 
             oPayload.BankDetails.forEach((r, idbx) => {
                 r.BankId = idbx.toString();
@@ -939,7 +1000,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 }
             }.bind(this));
 
-            ["BankDetails", "IdentficationNumbers", "TaxNumbers", "Certicates"].forEach(function (sTableKey) {
+            ["BankDetails", "IdentficationNumbers", "TaxNumbers", "Certicates", "ContactDetails"].forEach(function (sTableKey) {
                 if (Array.isArray(oPayload[sTableKey])) {
                     oPayload[sTableKey].forEach(function (oRow) {
                         aF4Fields.forEach(function (sField) {
@@ -1129,9 +1190,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
 
         onAddContact: function () {
             var oModel = this.getView().getModel("dataModel");
-            var aContacts = oModel.getProperty("/ContactDetails") || [];
-            aContacts.push({ "Contact": "" });
-            oModel.setProperty("/ContactDetails", aContacts);
+            var aContacts = oModel.getProperty("/ContactPerson") || [];
+            var ocpy = this.getModel("dataModelCpy").getData().ContactPerson[0];
+            aContacts.push(ocpy);
+            oModel.setProperty("/ContactPerson", aContacts);
             oModel.refresh(true);
         },
 

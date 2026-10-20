@@ -84,11 +84,14 @@ sap.ui.define([
 
                 "Certificates": true,
                 "CertificatesEdit": false,
-                "CertificatesEnable": true,
+                "CertificatesEnable": false,
+                "CertificatesCheckBox":true,
                 
                 "ContactDetails": true,
                 "ContactDetailsEdit": false,
-                "ContactDetailsEnable": true
+                "ContactDetailsEnable": false,
+                "ContactDetailsCheckBox":true,
+                "ContactDetailsGrouping":false
             }
             this.getView().getModel("Header").setProperty("/", svalue);
         },
@@ -145,6 +148,7 @@ sap.ui.define([
             var ocompcodeModel = this.getView().getModel("dataModel").getData().CompanyCodeData;
             var opOrgModel = this.getView().getModel("dataModel").getData().PurchaseOrgData;
             var oBankDataModel = this.getView().getModel("dataModel").getData().BankData;
+            var oContactPersonModel = this.getView().getModel("dataModel").getData().ContactPerson;
             var aRequiredFields_generaldata = [
                 "Grouping", "Name1", "Name2", "SearchTerm1", "BuildingCode", "Street", "District", "City", "PostalCode", "Region", "Country", "Language"
             ];
@@ -159,6 +163,9 @@ sap.ui.define([
                 "POrg", "Currency", "PaymentTerms", "IncotermsLocation", "Calculation"
             ];
 
+            var aRequiredFields_Contacts = [
+                "Name1", "Name2", "Country"
+            ];
 
             var bValid = true;
             var bValid1 = true;
@@ -198,7 +205,7 @@ sap.ui.define([
                         return;
                     }
                 }
-                if (bValid && opOrgModel["POrg"] !== '') {
+                if (bValid && opOrgModel !== undefined && opOrgModel["POrg"] !== '') {
                     for (var i = 0; i < aRequiredFields_POrg.length; i++) {
                         if (opOrgModel[aRequiredFields_POrg[i]] !== undefined && (!opOrgModel[aRequiredFields_POrg[i]]
                             || opOrgModel[aRequiredFields_POrg[i]].toString().trim() === "")) {
@@ -230,6 +237,29 @@ sap.ui.define([
                     return;
                 }
 
+                //
+                 if (bValid) {
+                    for (var i = 0; i < oContactPersonModel.length; i++) {
+                        if (oContactPersonModel[i].Name1 !== undefined && oContactPersonModel[i].Name1 === "") {
+                            bValid = false;
+                            break;
+                        }
+                        else if (oContactPersonModel[i].Name2 !== undefined && oContactPersonModel[i].Name2 === "") {
+                            bValid = false;
+                            break;
+                        }
+                        else if (oContactPersonModel[i].Country !== undefined && oContactPersonModel[i].Country === "") {
+                            bValid = false;
+                            break;
+                        }
+                    }
+                }
+                if (!bValid) {
+                    MessageToast.show("Please fill in all mandatory fields (marked with *) for Contact Details.");
+                    return;
+                }
+                //
+
                 if (bValid) {
                     var oViewModel = this.getView().getModel("ui");
                     oViewModel.setProperty("/isEditable", false);
@@ -244,6 +274,7 @@ sap.ui.define([
                     this.getView().getModel("Header").getData().TaxNumbersDataEnable = false;
                     this.getView().getModel("Header").getData().CertificatesEnable = false;
                     this.getView().getModel("Header").getData().ContactDetailsEnable = false;
+                    this.getView().getModel("Header").getData().ContactDetailsGrouping = false;
                     this.getView().getModel("Header").refresh(true);
 
                     MessageToast.show("Validation Successful. Form locked. You can now Submit.");
@@ -267,6 +298,7 @@ sap.ui.define([
             this.getView().getModel("Header").getData().TaxNumbersDataEnable = true;
             this.getView().getModel("Header").getData().CertificatesEnable = true;
             this.getView().getModel("Header").getData().ContactDetailsEnable = true;
+            this.getView().getModel("Header").getData().ContactDetailsGrouping= true;
             this.getView().getModel("Header").refresh(true);
         },
 
@@ -484,7 +516,6 @@ sap.ui.define([
                 }.bind(this)
             });
         },
-
         onAddRow: function () {
             var oModel = this.getView().getModel("dataModel").getProperty("/BankData");
             var oModelcpy = JSON.parse(JSON.stringify(oModel[0]));
@@ -497,6 +528,21 @@ sap.ui.define([
             }
             oModel.push(oModelcpy);
             this.getView().getModel("dataModel").setProperty("/BankData", oModel);
+            this.getView().getModel("dataModel").refresh(true);
+        },
+        onAddRowContactbank: function () {
+            var oModel = this.getView().getModel("dataModel").getProperty("/ContactBankData");
+            var oModelCpy1 = this.getView().getModel("dataModelCpy").getProperty("/ContactBankData");
+            var oModelcpy = JSON.parse(JSON.stringify(oModelCpy1[0]));
+            for (var i = 0; i < Object.values(oModelcpy).length; i++) {
+                if (Object.keys(oModelcpy)[i] === "Indicator") {
+                    oModelcpy[Object.keys(oModelcpy)[i]] = false;
+                } else {
+                    oModelcpy[Object.keys(oModelcpy)[i]] = "";
+                }
+            }
+            oModel.push(oModelcpy);
+            this.getView().getModel("dataModel").setProperty("/ContactBankData", oModel);
             this.getView().getModel("dataModel").refresh(true);
         },
 
@@ -553,6 +599,40 @@ sap.ui.define([
             );
         },
 
+        onDeleteRowContactbank: function (oEvent) {
+            var oTable = this.byId("employeeTable");
+            var oModel = this.getView().getModel("dataModel");
+            var aItems = oModel.getProperty("/ContactBankData");
+            var oselection = oTable.getSelectedIndices();
+            var that = this;
+            if (oselection.length === 0) {
+                MessageBox.warning("Please select at least one row.");
+                return;
+            }
+
+            MessageBox.confirm(
+                "Delete " + oselection.length + " selected row(s)?",
+                {
+                    onClose: function (sAction) {
+
+                        if (sAction === MessageBox.Action.OK) {
+                            oselection
+                                .sort(function (a, b) {
+                                    return b - a;
+                                })
+                                .forEach(function (iIndex) {
+                                    aItems.splice(iIndex, 1);
+                                });
+
+                            // Clear selection
+                            oTable.clearSelection();
+                            that.getView().getModel("dataModel").setProperty("/ContactBankData", aItems);
+                            that.getView().getModel("dataModel").refresh(true);
+                        }
+                    }
+                }
+            );
+        },
         onAddRowIdentifiNumbers: function () {
             var oModel = this.getView().getModel("dataModel").getProperty("/IdentifiNumbers");
             var oModelcpy = JSON.parse(JSON.stringify(oModel[0]));
@@ -656,6 +736,18 @@ sap.ui.define([
             return sResult;
         },
 
+        onEditCertificates: function (oEvent) {
+            var bflag = this.getView().getModel("Header").getData().CertificatesEnable;
+            this.getView().getModel("Header").getData().CertificatesEnable = !bflag;
+            this.getView().getModel("Header").refresh(true);
+        },
+
+        onEditContacts: function (oEvent) {
+            var bflag = this.getView().getModel("Header").getData().ContactDetailsEnable;
+            this.getView().getModel("Header").getData().ContactDetailsEnable = !bflag;
+            this.getView().getModel("Header").getData().ContactDetailsGrouping = !bflag;
+            this.getView().getModel("Header").refresh(true);
+        },
 
     });
 });

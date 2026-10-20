@@ -514,6 +514,11 @@
                            <VBox class="sapUiSmallMargin">
                             <Toolbar class="sapUiTransparentToolbar">
                                 <Title text="Manage Certificates" level="H3" />
+                                <Label text="Enable Certificate" design="Bold"/>
+                                        <CheckBox   
+                                        select="onEditCertificates" 
+                                         enabled="{Header>/CertificatesCheckBox}" />
+
                                 <ToolbarSpacer />
                                  <Button
                                     text="Edit"
@@ -792,7 +797,11 @@
                             <VBox class="sapUiSmallMargin">
                                 <Toolbar class="sapUiTransparentToolbar">
                                     <Title text="Contacts" level="H3" />
-                                    
+                                     <Label text="Enable Contact" design="Bold"/>
+                                        <CheckBox   
+                                        select="onEditContacts" 
+                                         enabled="{Header>/ContactDetailsCheckBox}" />
+
                                     <ToolbarSpacer />
                                     <Button
                                     text="Edit"
@@ -802,7 +811,7 @@
                                     <Button icon="sap-icon://add" text="Add Contact" type="Emphasized" press=".onAddContact" enabled="{Header>/ContactDetailsEnable}" />
                                 </Toolbar>
                                 
-                                <VBox items="{dataModel>/ContactDetails}">
+                                <VBox items="{dataModel>/ContactPerson}">
                                     <Panel expandable="false" width="auto" class="sapUiNoContentPadding sapUiSmallMarginBottom">
                                         <headerToolbar>
                                             <Toolbar height="3rem" style="Clear">
@@ -810,10 +819,344 @@
                                                 <Button icon="sap-icon://delete" type="Reject" press=".onDeleteContact" enabled="{Header>/ContactDetailsEnable}" tooltip="Remove this contact" />
                                             </Toolbar>
                                         </headerToolbar>
-                                        <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
-                                            <Label text="Contact Person " />
-                                            <Input value="{dataModel>Contact}" editable="{Header>/ContactDetailsEnable}" enabled="{Header>/ContactDetailsEnable}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"/>
+                                        <form:SimpleForm
+                                            editable="true"
+                                            layout="ColumnLayout"
+                                            columnsXL="4"
+                                            columnsL="3"
+                                            columnsM="2"
+                                        >
+                                     
+                                            <Label
+                                                text="Contact Person"
+                                                visible="{= ${ui>/isChangeMode} === true || ${ui>/isDisplayMode} === true }"
+                                            />
+                                            <Input
+                                                value="{dataModel>Contact}"
+                                                visible="{= ${ui>/isChangeMode} === true || ${ui>/isDisplayMode} === true }"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label
+                                                text="Partner"
+                                            />
+                                            <Input
+                                                value="{dataModel>Partner}" 
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Grouping" />
+                                            <Input
+                                                value="{dataModel>Grouping}"
+                                                enabled="{Header>/ContactDetailsGrouping}"
+                                            />
+                                            <Label text="Name 1" required="true"/>
+                                            <Input
+                                                value="{dataModel>Name1}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Name 2" required="true"/>
+                                            <Input
+                                                value="{dataModel>Name2}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Structure Group" />
+                                            <Input
+                                                value="{dataModel>StructureGroup}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                  
+                                            <Label text="Relationship Type" />
+                                            <Input
+                                                value="{dataModel>RelType}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Function" />
+                                            <Input
+                                                value="{dataModel>PartnerFunction}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Department" />
+                                            <Input
+                                                value="{dataModel>Department}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Authority" />
+                                            <Input
+                                                value="{dataModel>Authority}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="VIP" />
+                                            <Input
+                                                value="{dataModel>Vip}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Valid From" />
+                                            <DatePicker
+                                                value="{dataModel>ValidFrom}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                displayFormat="dd-MM-yyyy"
+                                                valueFormat="yyyyMMdd"
+                                            />
+ 
+                                            <Label text="Valid To" />
+                                            <DatePicker
+                                                value="{dataModel>ValidTo}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                displayFormat="dd-MM-yyyy"
+                                                valueFormat="yyyyMMdd"
+                                            />
+ 
+                                            <!-- Address & Communication -->
+                                            <Label text="Building" />
+                                            <Input
+                                                value="{dataModel>Building}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Street" />
+                                            <Input
+                                                value="{dataModel>Stret}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="District (City 2)" />
+                                            <Input
+                                                value="{dataModel>City2}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="City (City 1)" />
+                                            <Input
+                                                value="{dataModel>City1}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Postal Code" />
+                                            <Input
+                                                value="{dataModel>PostCode1}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="PO Box" />
+                                            <Input
+                                                value="{dataModel>PoBox}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Country" required="true"/>
+                                            <Input
+                                                value="{dataModel>Country}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Region" />
+                                            <Input
+                                                value="{dataModel>Region}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Language" />
+                                            <Input
+                                                value="{dataModel>Language}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Telephone" />
+                                            <Input
+                                                value="{dataModel>TelNumber}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Email" />
+                                            <Input
+                                                value="{dataModel>Email}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Fax Number" />
+                                            <Input
+                                                value="{dataModel>FaxNumber}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Note" />
+                                            <Input
+                                                value="{dataModel>Note}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
                                         </form:SimpleForm>
+        
+
+        <Toolbar>
+            <Title text=""/>
+            <ToolbarSpacer/>
+            <Button text="Edit"
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    press=".onEditContacts" visible="{Header>/ContactDetailsEdit}"/>
+
+            <Button text="Add Row" icon="sap-icon://add" enabled="{Header>/ContactDetailsEnable}"
+                    press=".onAddRowContactbank"/>
+            <Button text="Delete Row" icon="sap-icon://delete" enabled="{Header>/ContactDetailsEnable}"
+                    press=".onDeleteRowContactbank"/>
+        </Toolbar>
+
+
+                                         <table:Table
+            id="employeeTable1"
+            rows="{dataModel>/ContactBankData}"
+            selectionMode="MultiToggle"
+            visibleRowCount="3">
+		
+	
+            <table:columns>
+
+                <!-- <table:Column width="15rem">
+                    <Label wrapping="true"  text="Account Number of Supplier" />
+                    <table:template >
+                        <Input value="{dataModel>Supplier}" editable="Header>/ContactDetailsEnable" 
+						maxLength="{dataModel>/ContactBankDataProperty/ContactBankData/maxLength}"/>
+                    </table:template>
+                </table:Column> -->
+
+                <table:Column width="8rem">
+                    <Label wrapping="true"  text="Bank Country/Region"/>
+                    <table:template>
+                        <Input value="{dataModel>BankCountry}" 
+                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"  change=".onManualInputChange"
+                            editable="{Header>/ContactDetailsEnable}"  maxLength="{dataModel>/ContactBankDataProperty/BankCountry/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="10rem">
+                    <Label wrapping="true"  text="Bank Key"/>
+                    <table:template>
+                        <Input value="{dataModel>BankKey}" 
+                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"  change=".onManualInputChange"
+                            editable="{Header>/ContactDetailsEnable}"  maxLength="{dataModel>/ContactBankDataProperty/BankKey/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column  width="15rem">
+                    <Label wrapping="true"  text="Bank Account Number"/>
+                    <table:template>
+                        <Input value="{dataModel>BankAccount}" 
+						editable="{Header>/ContactDetailsEnable}"  
+						maxLength="{dataModel>/ContactBankDataProperty/BankAccount/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+				 <table:Column  width="10rem">
+                    <Label wrapping="true"  text="Bank Control Key"/>
+                    <table:template>
+                        <Input value="{dataModel>BankControlKey}" editable="{Header>/ContactDetailsEnable}"  
+						maxLength="{dataModel>/ContactBankDataProperty/BankControlKey/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="10rem">
+                    <Label wrapping="true"  text="Partner bank type"/>
+                    <table:template>
+                        <Input value="{dataModel>BankType}" editable="{Header>/ContactDetailsEnable}" 
+						maxLength="{dataModel>/ContactBankDataProperty/BankType/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="8rem">
+                    <Label wrapping="true"  text="Indicator: Is there collection authorization ?"/>
+                    <table:template>
+                        <CheckBox  selected="{dataModel>Indicator}"  editable="{Header>/ContactDetailsEnable}"  
+                        select="onselectbankcheckbox"  /> 
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="15rem">
+                    <Label wrapping="true"  text="Account Holder Name"/>
+                    <table:template>
+                        <Input value="{dataModel>AccountName}" editable="{Header>/ContactDetailsEnable}"  
+						maxLength="{dataModel>/ContactBankDataProperty/AccountName/maxLength}" /> 
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="15rem">
+                    <Label wrapping="true"  text="IBAN"/>
+                    <table:template>
+                        <Input value="{dataModel>Iban}" editable="{Header>/ContactDetailsEnable}"  
+						maxLength="{dataModel>/ContactBankDataProperty/Iban/maxLength}" /> 
+                    </table:template>
+                </table:Column>
+
+            </table:columns>
+
+        </table:Table>
+
                                     </Panel>
                                 </VBox>
                             </VBox>

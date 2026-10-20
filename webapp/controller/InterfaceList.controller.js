@@ -1,13 +1,18 @@
 sap.ui.define([
+     "zbpvendorapprv/controller/BaseController",
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
-], function (Controller, History, MessageToast, MessageBox) {
+    "sap/m/MessageBox",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], function (BaseController,Controller, History, MessageToast, MessageBox,Filter,FilterOperator) {
     "use strict";
 
-    return Controller.extend("zbpvendorapprv.controller.InterfaceList", {
-        onInit: function () {},
+    return BaseController.extend("zbpvendorapprv.controller.InterfaceList", {
+        onInit: function () {
+            
+        },
 
         onPressRecord: function (oEvent) {
             var oSelectedItem = oEvent.getSource();
@@ -43,6 +48,24 @@ sap.ui.define([
                 var oRouter = this.getOwnerComponent().getRouter();
                 oRouter.navTo("Routemain", {}, true);
             }
-        }
+        },
+        onBeforeRebindTable: function (oEvent) {
+
+    var oBindingParams = oEvent.getParameter("bindingParams");
+
+    var sRequestNo = this.byId("idRequestNumber").getValue();
+
+    if (sRequestNo) {
+
+        oBindingParams.filters.push(
+            new Filter(
+                "RequestNumber",
+                FilterOperator.EQ,
+                sRequestNo
+            )
+        );
+    }
+
+}
     });
 });

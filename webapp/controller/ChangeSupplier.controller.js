@@ -72,7 +72,8 @@ sap.ui.define([
 
                 "ContactDetails": true,
                 "ContactDetailsEdit": true,
-                "ContactDetailsEnable": false
+                "ContactDetailsEnable": false,
+                "ContactDetailsGrouping":false
             }
             this.getView().getModel("Header").setProperty("/", svalue);
         },
@@ -104,6 +105,8 @@ sap.ui.define([
 
         onEditContacts: function (oEvent) {
             this.getView().getModel("Header").getData().ContactDetailsEnable = true;
+            this.getView().getModel("Header").getData().ContactDetailsGrouping = false;
+            
             this.getView().getModel("Header").refresh(true);
         },
         onNavBack: function () {
@@ -219,6 +222,7 @@ sap.ui.define([
                     this.getView().getModel("Header").getData().TaxNumbersDataEnable = false;
                     this.getView().getModel("Header").getData().CertificatesEnable = false;
                     this.getView().getModel("Header").getData().ContactDetailsEnable = false;
+                    this.getView().getModel("Header").getData().ContactDetailsGrouping = false;
                     this.getView().getModel("Header").refresh(true);
                     this.onPostRequest("D", "V", "CH");
                 }
