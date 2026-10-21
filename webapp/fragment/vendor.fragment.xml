@@ -356,7 +356,7 @@
                 </table:Column>
 
                 <table:Column  >
-                    <Label wrapping="true"  text="Business Partner Tax Number"/>
+                    <Label wrapping="true"  text="Name"/>
                     <table:template>
                         <Input value="{dataModel>TaxNum}" editable="{Header>/TaxNumbersDataEnable}"  
 						maxLength="{dataModel>/TaxNumbersDataProperty/TaxNum/maxLength}" />
@@ -564,7 +564,7 @@
                                         
 
                                         <Label text="Certificate Valid To " />
-                                        <DatePicker value="{dataModel>CreditValidTo}" editable="{Header>/CertificatesEnable}"   
+                                        <DatePicker id="CreditValidTo" value="{dataModel>CreditValidTo}" editable="{Header>/CertificatesEnable}"   
 										displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
 
                                         <Label text="Cert Stat" />

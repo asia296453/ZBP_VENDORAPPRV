@@ -21,7 +21,7 @@ builder:
         app:
           name: ZBPVENDORAPPRV
           description: Vendor approval
-          package: ZBP
+          package: ZFIORIDEV
           transport: DS4K901189
         exclude:
           - /test/

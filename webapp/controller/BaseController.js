@@ -238,7 +238,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
         setUIModel: function (stype) {
             var sServiceURL = "/sap/opu/odata/sap/ZBP_VENDOR_APPROVAL_SRV/";
             var oModel = new sap.ui.model.odata.v2.ODataModel(sServiceURL);
-
+            var oDate = new Date(2999, 11, 31);
             oModel.attachMetadataLoaded(null, function () {
                 var oMetadata = oModel.getServiceMetadata().dataServices.schema[0].entityType;
 
@@ -293,13 +293,17 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                             if (oJsonData.Grouping !== undefined && oJsonData.Grouping === "") {
                                 oJsonData.Grouping = 'ZCP1';
                             }
+
+                            if (oJsonData.ValidTo !== undefined) {
+                                oJsonData.ValidTo = "2999-12-31";
+                            }
                         }
 
-                        // if (oMetadata[i].name === "Certificates") {
-                        //     if (oJsonData.CreditValidTo !== undefined ) {
-                        //         oJsonData.CreditValidTo = 'ZCP1';
-                        //     }
-                        // }
+                        if (oMetadata[i].name === "Certificates") {
+                            if (oJsonData.CreditValidTo !== undefined) {
+                                oJsonData.CreditValidTo = "2999-12-31";
+                            }
+                        }
 
                         if (oMetadata[i].name === "BankData"
                             || oMetadata[i].name === "IdentifiNumbers"
@@ -345,7 +349,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 this.getOwnerComponent().getModel("LocalModel").setProperty("/Status", "DRAFT");
                 this.getOwnerComponent().getModel("LocalModel").refresh(true);
             }
-
 
         },
 
@@ -583,6 +586,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                                 }
                                 this.onReadOData("/VendorCreateSet(RequestNumber='" + sSelectedValue + "')", null).then((oresponse) => {
                                     this.getDescription(oresponse);
+                                    if (oConfig.key === "Vendor") {
+                                        this.getView().getModel("dataModel").getData().VendorCreate.RequestNumber = '';
+                                        this.getView().getModel("dataModel").refresh(true);
+                                    }
                                     this.getView().getModel("dataModel").getData().VendorCreate.Status = 'DRAFT';
                                     this.getView().getModel("dataModel").refresh(true);
 
@@ -903,6 +910,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
             oPayload.Certicates = oRawData.Certificates;
             oPayload.ContactDetails = oRawData.ContactPerson;
 
+            oPayload.ContactDetails.forEach((r, idbx) => {
+                if (r.ValidTo !== undefined && r.ValidTo.indexOf("-") !== -1) {
+                    r.ValidTo = r.ValidTo.replace(/-/g, "");
+                }
+            })
+
             //begin bank data from contacts
             oRawData.ContactBankData.forEach((r, idbx) => {
                 r.Type = "C";
@@ -910,7 +923,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                     oPayload.BankDetails.push(r);
                 }
             })
-            debugger;
             // oPayload.BankDetails.concat(oRawData.ContactBankData);
             //begin bank data from contacts
 
@@ -936,6 +948,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                     r.MainCert = "";
                 } else if (r.MainCert === true) {
                     r.MainCert = "X";
+                }
+
+                if (r.CreditValidTo !== undefined && r.CreditValidTo.indexOf("-") !== -1) {
+                    r.CreditValidTo = r.CreditValidTo.replace(/-/g, "");
                 }
             })
 
@@ -966,16 +982,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 }
             })
 
-            if (oPayload.CompanyCode.ChkDoubleInv === true) {
-                oPayload.CompanyCode.ChkDoubleInv = "X";
-            } else {
-                oPayload.CompanyCode.ChkDoubleInv = "";
-            }
-            if (oPayload.CompanyCode.ClrgWithVend === true) {
-                oPayload.CompanyCode.ClrgWithVend = "X";
-            } else {
-                oPayload.CompanyCode.ClrgWithVend = "";
-            }
+            
             var oarrc = [];
             oarrc.push(oPayload.CompanyCode);
             oPayload.CompanyCode = oarrc;
@@ -1020,15 +1027,19 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
             oPayload.SaveAction = saction;
 
             if (stype === "CR") {//Create New
-                if (oPayload.RequestNumber !== "") {
-                    oPayload.Action = "C";
-                } else {
-                    oPayload.Action = "I";
-                }
+                // if (oPayload.RequestNumber !== "") {
+                //     oPayload.Action = "C";
+                // } else {
+                //     oPayload.Action = "I";
+                // }
+                oPayload.Action = "I";
             }
 
             if (stype === "CH") {//Change
                 oPayload.Action = "C";
+            }
+            if (stype === "EX") {//Change
+                oPayload.Action = "E";
             }
 
             this.saction = saction;
@@ -1058,6 +1069,17 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 if (this.getView().getModel("Header").getData().ContactDetailsEnable === false) {
                     delete oPayload.ContactDetails;
                 }
+            }
+
+            if (oPayload.CompanyCode[0].ChkDoubleInv === true) {
+                oPayload.CompanyCode[0].ChkDoubleInv = "X";
+            } else {
+                oPayload.CompanyCode[0].ChkDoubleInv = "";
+            }
+            if (oPayload.CompanyCode[0].ClrgWithVend === true) {
+                oPayload.CompanyCode[0].ClrgWithVend = "X";
+            } else {
+                oPayload.CompanyCode[0].ClrgWithVend = "";
             }
             var oODataModel = this.getOwnerComponent().getModel();
             this.getView().setBusy(true);
@@ -1174,8 +1196,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 this.getView().getModel("dataModel").getData().VendorCreate.Status = 'DRAFT';
                 this.getView().getModel("dataModel").refresh(true);
 
-
-                this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestType", 'CR');
+                debugger;
+                var svl = this.getOwnerComponent().getModel("LocalModel").getData().RequestType;
+                this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestType", svl);
                 this.getOwnerComponent().getModel("LocalModel").refresh(true);
             });
         },
