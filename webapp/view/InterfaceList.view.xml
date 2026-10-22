@@ -20,9 +20,12 @@
 
             <smartFilterBar:customControl>
 
-                <Input
-                    id="idRequestNumber"
-                    placeholder="Enter Request Number"/>
+               <Input
+                  id="idRequestNumber"
+                  placeholder="Select Request Number"
+                  showValueHelp="true"
+                  valueHelpOnly="true"
+                  valueHelpRequest=".onRequestNumberF4"/>
 
             </smartFilterBar:customControl>
 
@@ -43,7 +46,7 @@
     showRowCount="true"
     persistencyKey="WorkflowTable"
     beforeRebindTable="onBeforeRebindTable"
-  initiallyVisibleFields="RequestNumber,Partner,RequestBy,RequestedDate,RequestedTime,WFStatus"/>   
+    initiallyVisibleFields="RequestNumber,Partner,RequestBy,RequestedDate,RequestedTime,WFStatus,L1ApproverStatus,L2ApproverStatus,L3ApproverStatus,L4ApproverStatus"/>   
 
         </content>
     </Page>

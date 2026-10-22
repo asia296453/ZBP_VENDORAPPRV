@@ -12,6 +12,8 @@ sap.ui.define([
     return BaseController.extend("zbpvendorapprv.controller.InterfaceList", {
         onInit: function () {
             
+            this.oF4Mapping = this.setoF4Mapping();
+
         },
 
         onPressRecord: function (oEvent) {
@@ -65,6 +67,97 @@ sap.ui.define([
             )
         );
     }
+
+},
+
+onRequestNumberF4: function (oEvent) {
+
+    var oInput = oEvent.getSource();
+    var oModel = this.getOwnerComponent().getModel();
+
+    if (!this._oReqNumDialog) {
+
+        this._oReqNumDialog = new sap.m.TableSelectDialog({
+
+            title: "Select Request Number",
+
+            columns: [
+                new sap.m.Column({
+                    header: new sap.m.Label({
+                        text: "Request Number"
+                    })
+                }),
+                new sap.m.Column({
+                    header: new sap.m.Label({
+                        text: "WFStatus"
+                    })
+                }),
+                new sap.m.Column({
+                    header: new sap.m.Label({
+                        text: "RequestBy"
+                    })
+                })
+            ],
+
+            search: function (oEvt) {
+
+                var sValue = oEvt.getParameter("value");
+
+                var aFilters = sValue ?
+                    [new Filter("RequestNumber", FilterOperator.Contains, sValue)] : [];
+
+                oEvt.getSource().getBinding("items").filter(aFilters);
+
+            },
+
+            confirm: function (oEvt) {
+
+                var oSelectedItem = oEvt.getParameter("selectedItem");
+
+                if (oSelectedItem && this._oActiveReqInput) {
+
+                    var sReqId = oSelectedItem.getCells()[0].getText();
+
+                    this._oActiveReqInput.setValue(sReqId);
+
+                    this.byId("smartTable").rebindTable();
+
+                }
+
+            }.bind(this)
+
+        });
+
+        this.getView().addDependent(this._oReqNumDialog);
+        this._oReqNumDialog.setModel(oModel);
+
+    }
+
+    this._oActiveReqInput = oInput;
+
+    this._oReqNumDialog.bindAggregation("items", {
+
+        path: "/WorkflowStatusSet",
+
+        template: new sap.m.ColumnListItem({
+
+            cells: [
+                new sap.m.Text({
+                    text: "{RequestNumber}"
+                }),
+                new sap.m.Text({
+                    text: "{WFStatus}"
+                }),
+                new sap.m.Text({
+                    text: "{RequestBy}"
+                })
+            ]
+
+        })
+
+    });
+
+    this._oReqNumDialog.open();
 
 }
     });

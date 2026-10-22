@@ -69,6 +69,7 @@ sap.ui.define([
                 "Certificates": true,
                 "CertificatesEdit": true,
                 "CertificatesEnable": false,
+                "CertificatesCheckBox":false,
 
                 "ContactDetails": true,
                 "ContactDetailsEdit": true,
@@ -76,38 +77,60 @@ sap.ui.define([
                 "ContactDetailsGrouping":false
             }
             this.getView().getModel("Header").setProperty("/", svalue);
+            this.getView().getModel("HeaderCpy").setProperty("/", JSON.parse(JSON.stringify(svalue)));
         },
 
         onEditGeneral: function (oEvent) {
             this.getView().getModel("Header").getData().VendorCreateEnable = true;
             this.getView().getModel("Header").refresh(true);
+
+            this.getView().getModel("HeaderCpy").getData().VendorCreateEnable = true;
+            this.getView().getModel("HeaderCpy").refresh(true);
         },
         onEditIdentifiNumbers: function (oEvent) {
             this.getView().getModel("Header").getData().IdentifiNumbersEnable = true;
             this.getView().getModel("Header").refresh(true);
+
+            this.getView().getModel("HeaderCpy").getData().IdentifiNumbersEnable = true;
+            this.getView().getModel("HeaderCpy").refresh(true);
         },
         onEditTaxNumbers: function (oEvent) {
             this.getView().getModel("Header").getData().TaxNumbersDataEnable = true;
             this.getView().getModel("Header").refresh(true);
+
+            this.getView().getModel("HeaderCpy").getData().TaxNumbersDataEnable = true;
+            this.getView().getModel("HeaderCpy").refresh(true);
         },
         onEditBankData: function (oEvent) {
             this.getView().getModel("Header").getData().BankDataEnable = true;
             this.getView().getModel("Header").refresh(true);
+
+             this.getView().getModel("HeaderCpy").getData().BankDataEnable = true;
+            this.getView().getModel("HeaderCpy").refresh(true);
         },
         onEditCertificates: function (oEvent) {
             this.getView().getModel("Header").getData().CertificatesEnable = true;
             this.getView().getModel("Header").refresh(true);
+
+            this.getView().getModel("HeaderCpy").getData().CertificatesEnable = true;
+            this.getView().getModel("HeaderCpy").refresh(true);
         },
         onEditPurchaseOrg: function (oEvent) {
             this.getView().getModel("Header").getData().PurchaseOrgDataEnable = true;
             this.getView().getModel("Header").refresh(true);
+
+            this.getView().getModel("HeaderCpy").getData().PurchaseOrgDataEnable = true;
+            this.getView().getModel("HeaderCpy").refresh(true);
         },
 
         onEditContacts: function (oEvent) {
             this.getView().getModel("Header").getData().ContactDetailsEnable = true;
-            this.getView().getModel("Header").getData().ContactDetailsGrouping = false;
-            
+            this.getView().getModel("Header").getData().ContactDetailsGrouping = false;            
             this.getView().getModel("Header").refresh(true);
+
+            this.getView().getModel("HeaderCpy").getData().ContactDetailsEnable = true;
+            this.getView().getModel("HeaderCpy").getData().ContactDetailsGrouping = false;            
+            this.getView().getModel("HeaderCpy").refresh(true);
         },
         onNavBack: function () {
             this.setUIModel("");
@@ -463,7 +486,9 @@ sap.ui.define([
 
         onAddRow: function () {
             var oModel = this.getView().getModel("dataModel").getProperty("/BankData");
-            var oModelcpy = JSON.parse(JSON.stringify(oModel[0]));
+            var oModelCpy1 = this.getView().getModel("dataModelCpy").getProperty("/BankData");
+            var oModelcpy = JSON.parse(JSON.stringify(oModelCpy1[0]));
+
             for (var i = 0; i < Object.values(oModelcpy).length; i++) {
                 if (Object.keys(oModelcpy)[i] === "Indicator") {
                     oModelcpy[Object.keys(oModelcpy)[i]] = false;
@@ -531,7 +556,8 @@ sap.ui.define([
 
         onAddRowIdentifiNumbers: function () {
             var oModel = this.getView().getModel("dataModel").getProperty("/IdentifiNumbers");
-            var oModelcpy = JSON.parse(JSON.stringify(oModel[0]));
+            var oModelCpy1 = this.getView().getModel("dataModelCpy").getProperty("/IdentifiNumbers");
+            var oModelcpy = JSON.parse(JSON.stringify(oModelCpy1[0]));
             for (var i = 0; i < Object.values(oModelcpy).length; i++) {
                 if (Object.keys(oModelcpy)[i] === "EntryDate"
                     || Object.keys(oModelcpy)[i] === "ValidFrom"
@@ -584,7 +610,9 @@ sap.ui.define([
 
         onAddRowTaxNumbersData: function () {
             var oModel = this.getView().getModel("dataModel").getProperty("/TaxNumbersData");
-            var oModelcpy = JSON.parse(JSON.stringify(oModel[0]));
+            var oModelCpy1 = this.getView().getModel("dataModelCpy").getProperty("/TaxNumbersData");
+            var oModelcpy = JSON.parse(JSON.stringify(oModelCpy1[0]));
+            
             for (var i = 0; i < Object.values(oModelcpy).length; i++) {
                 oModelcpy[Object.keys(oModelcpy)[i]] = "";
             }

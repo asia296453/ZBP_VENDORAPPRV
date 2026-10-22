@@ -29,6 +29,7 @@ sap.ui.define([
             this.setModel(new sap.ui.model.json.JSONModel,"oF4Mapping");
             this.setModel(new sap.ui.model.json.JSONModel,"LocalModel");
             this.setModel(new sap.ui.model.json.JSONModel,"Header");
+            this.setModel(new sap.ui.model.json.JSONModel,"HeaderCpy");
             this.setModel(new sap.ui.model.json.JSONModel,"MyInbox");
         }
     });

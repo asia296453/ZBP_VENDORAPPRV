@@ -94,6 +94,7 @@ sap.ui.define([
                 "ContactDetailsGrouping":false
             }
             this.getView().getModel("Header").setProperty("/", svalue);
+            this.getView().getModel("HeaderCpy").setProperty("/", JSON.parse(JSON.stringify(svalue)));
         },
 
         _getInitialData: function () {
@@ -238,26 +239,26 @@ sap.ui.define([
                 }
 
                 //
-                 if (bValid) {
-                    for (var i = 0; i < oContactPersonModel.length; i++) {
-                        if (oContactPersonModel[i].Name1 !== undefined && oContactPersonModel[i].Name1 === "") {
-                            bValid = false;
-                            break;
-                        }
-                        else if (oContactPersonModel[i].Name2 !== undefined && oContactPersonModel[i].Name2 === "") {
-                            bValid = false;
-                            break;
-                        }
-                        else if (oContactPersonModel[i].Country !== undefined && oContactPersonModel[i].Country === "") {
-                            bValid = false;
-                            break;
-                        }
-                    }
-                }
-                if (!bValid) {
-                    MessageToast.show("Please fill in all mandatory fields (marked with *) for Contact Details.");
-                    return;
-                }
+                //  if (bValid) {
+                //     for (var i = 0; i < oContactPersonModel.length; i++) {
+                //         if (oContactPersonModel[i].Name1 !== undefined && oContactPersonModel[i].Name1 === "") {
+                //             bValid = false;
+                //             break;
+                //         }
+                //         else if (oContactPersonModel[i].Name2 !== undefined && oContactPersonModel[i].Name2 === "") {
+                //             bValid = false;
+                //             break;
+                //         }
+                //         else if (oContactPersonModel[i].Country !== undefined && oContactPersonModel[i].Country === "") {
+                //             bValid = false;
+                //             break;
+                //         }
+                //     }
+                // }
+                // if (!bValid) {
+                //     MessageToast.show("Please fill in all mandatory fields (marked with *) for Contact Details.");
+                //     return;
+                // }
                 //
 
                 if (bValid) {
@@ -277,7 +278,7 @@ sap.ui.define([
                     this.getView().getModel("Header").getData().ContactDetailsGrouping = false;
                     this.getView().getModel("Header").refresh(true);
 
-                    MessageToast.show("Validation Successful. Form locked. You can now Submit.");
+                    // MessageToast.show("Validation Successful. Form locked. You can now Submit.");
 
                     this.onPostRequest("D", "V","CR");
                 }
@@ -517,8 +518,11 @@ sap.ui.define([
             });
         },
         onAddRow: function () {
+            
             var oModel = this.getView().getModel("dataModel").getProperty("/BankData");
-            var oModelcpy = JSON.parse(JSON.stringify(oModel[0]));
+            var oModelCpy1 = this.getView().getModel("dataModelCpy").getProperty("/BankData");
+            var oModelcpy = JSON.parse(JSON.stringify(oModelCpy1[0]));
+
             for (var i = 0; i < Object.values(oModelcpy).length; i++) {
                 if (Object.keys(oModelcpy)[i] === "Indicator") {
                     oModelcpy[Object.keys(oModelcpy)[i]] = false;
@@ -635,7 +639,9 @@ sap.ui.define([
         },
         onAddRowIdentifiNumbers: function () {
             var oModel = this.getView().getModel("dataModel").getProperty("/IdentifiNumbers");
-            var oModelcpy = JSON.parse(JSON.stringify(oModel[0]));
+            var oModelCpy1 = this.getView().getModel("dataModelCpy").getProperty("/IdentifiNumbers");
+            var oModelcpy = JSON.parse(JSON.stringify(oModelCpy1[0]));
+
             for (var i = 0; i < Object.values(oModelcpy).length; i++) {
                 if (Object.keys(oModelcpy)[i] === "EntryDate"
                     || Object.keys(oModelcpy)[i] === "ValidFrom"
@@ -688,7 +694,9 @@ sap.ui.define([
 
         onAddRowTaxNumbersData: function () {
             var oModel = this.getView().getModel("dataModel").getProperty("/TaxNumbersData");
-            var oModelcpy = JSON.parse(JSON.stringify(oModel[0]));
+            var oModelCpy1 = this.getView().getModel("dataModelCpy").getProperty("/TaxNumbersData");
+            var oModelcpy = JSON.parse(JSON.stringify(oModelCpy1[0]));
+
             for (var i = 0; i < Object.values(oModelcpy).length; i++) {
                 oModelcpy[Object.keys(oModelcpy)[i]] = "";
             }

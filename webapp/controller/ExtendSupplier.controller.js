@@ -48,7 +48,7 @@ sap.ui.define([
 
                 "CompanyCodeData": true,
                 "CompanyCodeDataEdit": true,
-                "CompanyCodeDataEnable": false,
+                "CompanyCodeDataEnable": true,
 
                 "BankData": false,
                 "BankDataEdit": false,
@@ -75,6 +75,7 @@ sap.ui.define([
                 "ContactDetailsEnable": false
             }
             this.getView().getModel("Header").setProperty("/", svalue);
+            this.getView().getModel("HeaderCpy").setProperty("/", JSON.parse(JSON.stringify(svalue)));
         },
 
         onEditGeneral: function (oEvent) {

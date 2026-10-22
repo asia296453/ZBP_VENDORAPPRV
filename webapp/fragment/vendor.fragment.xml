@@ -841,7 +841,7 @@
                                                 change=".onManualInputChange"
                                             />
  
-                                            <Label
+                                            <!-- <Label
                                                 text="Partner"
                                             />
                                             <Input
@@ -851,7 +851,7 @@
                                                 showValueHelp="true"
                                                 valueHelpRequest=".onValueHelpRequest"
                                                 change=".onManualInputChange"
-                                            />
+                                            /> -->
  
                                             <Label text="Grouping" />
                                             <Input
@@ -883,15 +883,7 @@
                                             />
  
                                   
-                                            <Label text="Relationship Type" />
-                                            <Input
-                                                value="{dataModel>RelType}"
-                                                editable="{Header>/ContactDetailsEnable}"
-                                                enabled="{Header>/ContactDetailsEnable}"
-                                                showValueHelp="true"
-                                                valueHelpRequest=".onValueHelpRequest"
-                                                change=".onManualInputChange"
-                                            />
+                                        
  
                                             <Label text="Function" />
                                             <Input
@@ -947,8 +939,7 @@
                                                 value="{dataModel>ValidTo}"
                                                 editable="{Header>/ContactDetailsEnable}"
                                                 enabled="{Header>/ContactDetailsEnable}"
-                                                displayFormat="dd-MM-yyyy"
-                                                valueFormat="yyyyMMdd"
+                                                displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd"  
                                             />
  
                                             <!-- Address & Communication -->
@@ -1054,7 +1045,7 @@
                                         </form:SimpleForm>
         
 
-        <Toolbar>
+        <!-- <Toolbar>
             <Title text=""/>
             <ToolbarSpacer/>
             <Button text="Edit"
@@ -1077,14 +1068,6 @@
 		
 	
             <table:columns>
-
-                <!-- <table:Column width="15rem">
-                    <Label wrapping="true"  text="Account Number of Supplier" />
-                    <table:template >
-                        <Input value="{dataModel>Supplier}" editable="Header>/ContactDetailsEnable" 
-						maxLength="{dataModel>/ContactBankDataProperty/ContactBankData/maxLength}"/>
-                    </table:template>
-                </table:Column> -->
 
                 <table:Column width="8rem">
                     <Label wrapping="true"  text="Bank Country/Region"/>
@@ -1155,7 +1138,7 @@
 
             </table:columns>
 
-        </table:Table>
+        </table:Table> -->
 
                                     </Panel>
                                 </VBox>

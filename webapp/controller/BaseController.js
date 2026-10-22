@@ -236,9 +236,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
         },
 
         setUIModel: function (stype) {
+            this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestNumber" ,"");
             var sServiceURL = "/sap/opu/odata/sap/ZBP_VENDOR_APPROVAL_SRV/";
             var oModel = new sap.ui.model.odata.v2.ODataModel(sServiceURL);
-            var oDate = new Date(2999, 11, 31);
+            var oDate = new Date(9999, 11, 31);
             oModel.attachMetadataLoaded(null, function () {
                 var oMetadata = oModel.getServiceMetadata().dataServices.schema[0].entityType;
 
@@ -295,13 +296,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                             }
 
                             if (oJsonData.ValidTo !== undefined) {
-                                oJsonData.ValidTo = "2999-12-31";
+                                oJsonData.ValidTo = "9999-12-31";
                             }
                         }
 
                         if (oMetadata[i].name === "Certificates") {
                             if (oJsonData.CreditValidTo !== undefined) {
-                                oJsonData.CreditValidTo = "2999-12-31";
+                                oJsonData.CreditValidTo = "9999-12-31";
                             }
                         }
 
@@ -586,14 +587,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                                 }
                                 this.onReadOData("/VendorCreateSet(RequestNumber='" + sSelectedValue + "')", null).then((oresponse) => {
                                     this.getDescription(oresponse);
-                                    if (oConfig.key === "Vendor") {
-                                        this.getView().getModel("dataModel").getData().VendorCreate.RequestNumber = '';
-                                        this.getView().getModel("dataModel").refresh(true);
-                                    }
+                                    this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestNumber" ,this.getView().getModel("dataModel").getData().VendorCreate.RequestNumber);
+                                    
                                     this.getView().getModel("dataModel").getData().VendorCreate.Status = 'DRAFT';
+                                    this.getView().getModel("dataModel").getData().VendorCreate.RequestNumber = "";
                                     this.getView().getModel("dataModel").refresh(true);
 
-
+                                    
                                     this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestType", stype);
                                     this.getOwnerComponent().getModel("LocalModel").refresh(true);
                                 });
@@ -776,9 +776,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                         smodel = ofields.model;
                     }
 
-                    if (smodel === "ContactPerson") {
-                        debugger;
-                    }
+                    // if (smodel === "ContactPerson") {
+                    //     debugger;
+                    // }
                     if (smodel === "BankData" || smodel === "IdentifiNumbers" || smodel === "TaxNumbersData" || smodel === "Certificates" || smodel === "ContactPerson") {
                         for (var idx = 0; idx < this.getOwnerComponent().getModel("dataModel").getData()[smodel].length; idx++) {
                             if (this.getOwnerComponent().getModel("dataModel").getData()[smodel][idx][skeyDesc] !== undefined) {
@@ -896,6 +896,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
 
         onPostRequest: function (saction, svalidate, stype) {
             var oLocalModel = this.getView().getModel("dataModel");
+            var sreno = oLocalModel.getData().VendorCreate.RequestNumber;
             var oRawData = JSON.parse(JSON.stringify(oLocalModel.getData()));
             var oPayload = oRawData.VendorCreate;
             var oporg = [];
@@ -1051,22 +1052,22 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
 
             if (this.getOwnerComponent().getModel("LocalModel").getData().RequestType === "CH" ||
                 this.getOwnerComponent().getModel("LocalModel").getData().RequestType === "EX") {
-                if (this.getView().getModel("Header").getData().BankDataEnable === false) {
+                if (this.getView().getModel("HeaderCpy").getData().BankDataEnable === false) {
                     delete oPayload.BankDetails;
                 }
-                if (this.getView().getModel("Header").getData().PurchaseOrgDataEnable === false) {
+                if (this.getView().getModel("HeaderCpy").getData().PurchaseOrgDataEnable === false) {
                     delete oPayload.PurchaseOrg;
                 }
-                if (this.getView().getModel("Header").getData().IdentifiNumbersEnable === false) {
+                if (this.getView().getModel("HeaderCpy").getData().IdentifiNumbersEnable === false) {
                     delete oPayload.IdentficationNumbers;
                 }
-                if (this.getView().getModel("Header").getData().TaxNumbersDataEnable === false) {
+                if (this.getView().getModel("HeaderCpy").getData().TaxNumbersDataEnable === false) {
                     delete oPayload.TaxNumbers;
                 }
-                if (this.getView().getModel("Header").getData().CertificatesEnable === false) {
+                if (this.getView().getModel("HeaderCpy").getData().CertificatesEnable === false) {
                     delete oPayload.Certicates;
                 }
-                if (this.getView().getModel("Header").getData().ContactDetailsEnable === false) {
+                if (this.getView().getModel("HeaderCpy").getData().ContactDetailsEnable === false) {
                     delete oPayload.ContactDetails;
                 }
             }
@@ -1081,6 +1082,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
             } else {
                 oPayload.CompanyCode[0].ClrgWithVend = "";
             }
+
+            // if(oPayload.RequestNumber === "" && this.getOwnerComponent().getModel("LocalModel").getData().RequestNumber !== ""){
+            //     oPayload.RequestNumber = this.getOwnerComponent().getModel("LocalModel").getData().RequestNumber;
+            // }
+            oPayload.RequestNumber = sreno;
             var oODataModel = this.getOwnerComponent().getModel();
             this.getView().setBusy(true);
             debugger;
@@ -1196,7 +1202,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 this.getView().getModel("dataModel").getData().VendorCreate.Status = 'DRAFT';
                 this.getView().getModel("dataModel").refresh(true);
 
-                debugger;
+                this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestNumber" ,this.getView().getModel("dataModel").getData().VendorCreate.RequestNumber);
                 var svl = this.getOwnerComponent().getModel("LocalModel").getData().RequestType;
                 this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestType", svl);
                 this.getOwnerComponent().getModel("LocalModel").refresh(true);
