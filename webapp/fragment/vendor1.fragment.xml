@@ -1,0 +1,1200 @@
+<core:FragmentDefinition
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+    xmlns:upload="sap.m.upload"
+    xmlns:uxap="sap.uxap"
+    xmlns:layout="sap.ui.layout"
+     xmlns:table="sap.ui.table"
+     height="100%"
+>
+
+    <uxap:ObjectPageLayout id="ObjectPageLayout1"
+		showTitleInHeaderContent="true"
+		headerContentPinned="true"
+		upperCaseAnchorBar="false">
+        
+    <uxap:headerTitle  >
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <!-- Title changes dynamically based on the mode -->
+                    <Title text="{
+                        path: 'LocalModel>/RequestType',
+                        formatter: '.formatRequestType'
+                    }" wrapping="true" visible="{ui>/header}"/>
+                </uxap:expandedHeading>
+                <uxap:navigationActions>
+                </uxap:navigationActions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <!-- HEADER CONTENT (Replacing the top Panel) -->
+        <uxap:headerContent>
+            <HBox wrap="Wrap" fitContainer="true"  >
+               <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+    <Label text="Request No" />   
+    <Input  
+        value="{dataModel>/VendorCreate/RequestNumber}"  
+        showValueHelp="true" 
+        valueHelpOnly="true" 
+        valueHelpRequest=".onRequestNumberF4"  
+        placeholder="Click icon to search ->" />        
+       
+    <!-- Text shown ONLY in Create Mode -->
+    <Text text="{ui>/RequestNo}" visible="{= !${ui>/isChangeMode} }" />
+</VBox>
+
+  <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom" visible="{= ${LocalModel>/RequestType} === 'CH' ||  ${LocalModel>/RequestType} === 'EX' }">
+    <Label text="Vendor No" />   
+    <Input  
+        value="{dataModel>/VendorCreate/Vendor}"  
+        showValueHelp="true" 
+        valueHelpOnly="true" 
+        valueHelpRequest=".onValueHelpRequest"  
+        placeholder="Click icon to search ->" />        
+       
+    <!-- Text shown ONLY in Create Mode -->
+    <Text text="{ui>/RequestNo}" visible="{= !${ui>/isChangeMode} }" />
+</VBox>
+                
+                <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+                    <Label text="Request Type" />
+                    <Text text="{LocalModel>/RequestType}" class="sapMObjectNumberText" />
+                </VBox>
+                
+                <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+                    <Label text="Vendor No." visible="{= ${LocalModel>/RequestType} === 'CR' }"/>
+                    <Text text="{= ${dataModel>/VendorCreate/Vendor} ? ${dataModel>/VendorCreate/Vendor} : 'Generated on Approval' }" 
+                    visible="{= ${LocalModel>/RequestType} === 'CR' }"
+                    class="sapMObjectNumberText" />
+
+                    <Label text="Vendor Name" visible="{= ${LocalModel>/RequestType} === 'CH' || ${LocalModel>/RequestType} === 'EX'}"/>
+                    <Text text="{LocalModel>/VendorName}" 
+                    visible="{= ${LocalModel>/RequestType} === 'CH' }"
+                    class="sapMObjectNumberText" />
+                </VBox>
+                
+                <VBox class="sapUiSmallMarginBottom">
+                    <Label text="Status" />
+                    <Text text="{dataModel>/VendorCreate/Status}" />
+                </VBox>
+            </HBox>
+        </uxap:headerContent>
+
+      
+        <uxap:sections>
+            
+            <!-- SECTION 1: GENERAL DATA -->
+            <uxap:ObjectPageSection title="General Data" titleUppercase="false" visible="{Header>/VendorCreate}">
+                <uxap:subSections>
+                    
+                    <!-- BOX 1: GENERAL INFORMATION  -->
+                    <uxap:ObjectPageSubSection title="General Information " titleUppercase="false">
+                        <uxap:blocks>
+                             <VBox>
+                            <OverflowToolbar>
+                                <ToolbarSpacer/>
+                                <Button
+                                    text="Edit"
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    press=".onEditGeneral" visible="{Header>/VendorCreateEdit}"/>
+                            </OverflowToolbar>
+                       
+                           <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                         
+                            <Label text="Grouping" required="true" />
+                            <Input value="{dataModel>/VendorCreate/Grouping}" editable="{Header>/VendorCreateGrouping}"
+                             showValueHelp="true" valueHelpRequest=".onValueHelpRequest" placeholder="ZV01" 
+                             change=".onManualInputChange" maxLength="{dataModel>/VendorCreateProperty/Grouping/maxLength}" >
+                             
+                            </Input>
+
+                            <Label text="External Number" />
+                            <Input value="{dataModel>/VendorCreate/ExternalNumber}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/ExternalNumber/maxLength}" />
+
+                            <Label text="Search Term 1"  required="true" />
+                            <Input value="{dataModel>/VendorCreate/SearchTerm1}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/SearchTerm1/maxLength}" />
+
+                            <Label text="Search Term 2" />
+                            <Input value="{dataModel>/VendorCreate/SearchTerm2}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/SearchTerm2/maxLength}" />
+
+                            <Label text="Title Key" />
+                            <Input value="{dataModel>/VendorCreate/TitleKey}" editable="{Header>/VendorCreateEnable}" />
+                            <!-- maxLength="{dataModel>/VendorCreateProperty/TitleKey/maxLength}" /> -->
+
+                            <Label text="Name 1" required="true" />
+                            <Input value="{dataModel>/VendorCreate/Name1}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Name1/maxLength}" />
+
+                            <Label text="Name 2" required="true" />
+                            <Input value="{dataModel>/VendorCreate/Name2}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Name2/maxLength}" />
+
+                            <Label text="Name 3" />
+                            <Input value="{dataModel>/VendorCreate/Name3}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Name3/maxLength}" />
+
+                            <Label text="Name 4" />
+                            <Input value="{dataModel>/VendorCreate/Name4}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Name4/maxLength}" />
+ 
+                            
+                            <Label text="Structure Group" />
+                            <Input value="{dataModel>/VendorCreate/StructureGroup}" editable="{Header>/VendorCreateEnable}"
+                             maxLength="{dataModel>/VendorCreateProperty/StructureGroup/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"/>
+
+                            <Label text="Language" required="true"/>
+                            <Input value="{dataModel>/VendorCreate/Language}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Language/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"/>
+
+                            <Label text="Telephone" />
+                            <Input value="{dataModel>/VendorCreate/Telephone}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Telephone/maxLength}" />
+
+                            <Label text="Email" />
+                            <Input value="{dataModel>/VendorCreate/Email}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Email/maxLength}" />
+
+                            <Label text="Fax" />
+                            <Input value="{dataModel>/VendorCreate/Fax}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Fax/maxLength}" />
+
+                            <Label text="PO Box Number" />
+                            <Input value="{dataModel>/VendorCreate/PoBox}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/PoBox/maxLength}" />
+                            
+                             
+                        </form:SimpleForm>
+                         </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+
+                   <!-- Address -->
+                    <uxap:ObjectPageSubSection title="Address" titleUppercase="false">
+                        <uxap:blocks>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                            <form:content> 
+				
+                            <Label text="Street" required="true" />
+                            <Input value="{dataModel>/VendorCreate/Street}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Street/maxLength}" />
+
+
+ <Label text="District" required="true" />
+                            <Input value="{dataModel>/VendorCreate/District}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/District/maxLength}" />
+
+
+<Label text="City" required="true" />
+                            <Input value="{dataModel>/VendorCreate/City}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/City/maxLength}" />
+
+
+ <Label text="Building Code" required="true" />
+                            <Input value="{dataModel>/VendorCreate/BuildingCode}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/BuildingCode/maxLength}" />
+
+
+ <Label text="Postal Code" required="true" />
+                            <Input value="{dataModel>/VendorCreate/PostalCode}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/PostalCode/maxLength}" />
+                            
+                           
+                             <Label text="Country" required="true" />
+                            <Input value="{dataModel>/VendorCreate/Country}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Country/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"/>
+                            
+                             <Label text="Region" required="true" />
+                            <Input value="{dataModel>/VendorCreate/Region}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Region/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"/>
+ 
+		      
+                             <Label text="PO Box" required="true" />
+                            <Input value="{dataModel>/VendorCreate/PoBox}" editable="{Header>/VendorCreateEnable}" />
+ 
+            </form:content>			
+        </form:SimpleForm>
+		
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                    
+
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+ 
+
+         <!-- Identification Numbers -->
+            <uxap:ObjectPageSection title="Identification Numbers" titleUppercase="false" visible="{Header>/IdentifiNumbers}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                            <VBox class="sapUiSmallMargin">
+
+        <Toolbar>
+            <Title text=""/>
+            <ToolbarSpacer/>
+            <Button text="Edit" 
+            icon="sap-icon://edit"
+            type="Transparent"
+            press=".onEditIdentifiNumbers" 
+            visible="{Header>/IdentifiNumbersEdit}"/>
+
+            <Button text="Add Row" icon="sap-icon://add" enabled="{Header>/IdentifiNumbersEnable}"
+                    press=".onAddRowIdentifiNumbers" />
+            <Button text="Delete Row" icon="sap-icon://delete" enabled="{Header>/IdentifiNumbersEnable}"
+                    press=".onDeleteRowIdentifiNumbers"/>
+        </Toolbar>
+<table:Table
+            id="identificationTable"
+            rows="{dataModel>/IdentifiNumbers}"
+            selectionMode="MultiToggle"
+            visibleRowCount="3">
+
+            <table:columns>
+
+                <table:Column width="10rem">
+                    <Label wrapping="true"  text="Identification Type" />
+                    <table:template >
+                        <Input value="{dataModel>Type}" 
+                              showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"
+                            editable="{Header>/IdentifiNumbersEnable}"  maxLength="{dataModel>/IdentifiNumbersProperty/Type/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="10rem">
+                    <Label wrapping="true"  text="Identification Number"/>
+                    <table:template>
+                        <Input value="{dataModel>IdNumber}" editable="{Header>/IdentifiNumbersEnable}"  
+						maxLength="{dataModel>/IdentifiNumbersProperty/IdNumber/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="10rem">
+                    <Label wrapping="true"  text="Responsible Institution for ID Number"/>
+                    <table:template>
+                        <Input value="{dataModel>Institute}" editable="{Header>/IdentifiNumbersEnable}"  
+						maxLength="{dataModel>/IdentifiNumbersProperty/Institute/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column  width="10rem">
+                    <Label wrapping="true"  text="Date of Entry for ID Number"/>
+                    <table:template>
+                        <DatePicker value="{dataModel>EntryDate}" editable="{Header>/IdentifiNumbersEnable}"   
+							displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+                    </table:template>
+                </table:Column>
+				
+				 <table:Column  width="10rem">
+                    <Label wrapping="true"  text="Validity Start for ID Number"/>
+                    <table:template>
+                        <DatePicker value="{dataModel>ValidFrom}" editable="{Header>/IdentifiNumbersEnable}"   
+							displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+					</table:template>
+                </table:Column>
+				
+				<table:Column  width="10rem">
+                    <Label wrapping="true"  text="Validity End for ID Number"/>
+                    <table:template>
+                        <DatePicker value="{dataModel>ValidTo}" editable="{Header>/IdentifiNumbersEnable}" 
+							displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="10rem">
+                    <Label wrapping="true"  text="Country/Region in Which ID Number is Valid or Was Assigned"/>
+                    <table:template>
+                        <Input value="{dataModel>Country}"
+                              showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"
+                             editable="{Header>/IdentifiNumbersEnable}"  maxLength="{dataModel>/IdentifiNumbersProperty/Country/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="10rem">
+                    <Label wrapping="true"  text="Region (State, Province, County)"/>
+                    <table:template>
+                        <Input value="{dataModel>Region}" 
+                              showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"
+                            editable="{Header>/IdentifiNumbersEnable}"  maxLength="{dataModel>/IdentifiNumbersProperty/Region/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+
+            </table:columns>
+
+        </table:Table>
+        
+
+    </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+ 
+            <!-- SECTION Tax Numbers -->
+            <uxap:ObjectPageSection title="Tax Numbers" titleUppercase="false" visible="{Header>/TaxNumbersData}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                              <VBox class="sapUiSmallMargin">
+
+        <Toolbar>
+            <Title text=""/>
+            <ToolbarSpacer/>
+            <Button text="Edit"
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    press=".onEditTaxNumbers" visible="{Header>/TaxNumbersDataEdit}"/>
+            <Button text="Add Row" icon="sap-icon://add" enabled="{Header>/TaxNumbersDataEnable}"
+                    press=".onAddRowTaxNumbersData"/>
+            <Button text="Delete Row" icon="sap-icon://delete" enabled="{Header>/TaxNumbersDataEnable}"
+                    press=".onDeleteRowTaxNumbersData"/>
+        </Toolbar>
+<table:Table
+            id="TaxNumbersDataTable"
+            rows="{dataModel>/TaxNumbersData}"
+            selectionMode="MultiToggle"
+            visibleRowCount="3">
+
+            <table:columns>
+
+                <table:Column  >
+                    <Label wrapping="true"  text="Tax Number Category" />
+                    <table:template >
+                       <Input value="{dataModel>TaxType}" 
+                              showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"
+                            editable="{Header>/TaxNumbersDataEnable}"  maxLength="{dataModel>/TaxNumbersDataProperty/TaxType/maxLength}" />
+
+                    </table:template>
+                </table:Column>
+
+                <table:Column  >
+                    <Label wrapping="true"  text="Name"/>
+                    <table:template>
+                        <Input value="{dataModel>TaxNum}" editable="{Header>/TaxNumbersDataEnable}"  
+						maxLength="{dataModel>/TaxNumbersDataProperty/TaxNum/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column  >
+                    <Label wrapping="true"  text="Business Partner Tax Number"/>
+                    <table:template>
+                        <Input value="{dataModel>TaxNumxl}" editable="{Header>/TaxNumbersDataEnable}"  
+						maxLength="{dataModel>/TaxNumbersDataProperty/TaxNumxl/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column   >
+                    <Label wrapping="true"  text="Business Partner Tax Number Registration Status"/>
+                    <table:template>
+                        <Input value="{dataModel>TaxStatus}" 
+                              showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"
+                            editable="{Header>/TaxNumbersDataEnable}"  maxLength="{dataModel>/TaxNumbersDataProperty/TaxStatus/maxLength}" />
+							
+                    </table:template>
+                </table:Column>
+            </table:columns>
+
+        </table:Table>
+        
+
+    </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+
+<!--  Bank Data -->
+            <uxap:ObjectPageSection title="Bank Data" titleUppercase="false" visible="{Header>/BankData}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                               <VBox class="sapUiSmallMargin">
+
+        <Toolbar>
+            <Title text=""/>
+            <ToolbarSpacer/>
+            <Button text="Edit"
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    press=".onEditBankData" visible="{Header>/BankDataEdit}"/>
+
+            <Button text="Add Row" icon="sap-icon://add" enabled="{Header>/BankDataEnable}"
+                    press=".onAddRow"/>
+            <Button text="Delete Row" icon="sap-icon://delete" enabled="{Header>/BankDataEnable}"
+                    press=".onDeleteRow"/>
+        </Toolbar>
+
+        <table:Table
+            id="employeeTable"
+            rows="{dataModel>/BankData}"
+            selectionMode="MultiToggle"
+            visibleRowCount="3">
+
+            <table:columns>
+
+                <!-- <table:Column width="15rem">
+                    <Label wrapping="true"  text="Account Number of Supplier" />
+                    <table:template >
+                        <Input value="{dataModel>Supplier}" editable="{ui>/isEditable}" 
+						maxLength="{dataModel>/BankDataProperty/BankData/maxLength}"/>
+                    </table:template>
+                </table:Column> -->
+
+                <table:Column width="8rem">
+                    <Label wrapping="true"  text="Bank Country/Region"/>
+                    <table:template>
+                        <Input value="{dataModel>BankCountry}" 
+                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"  change=".onManualInputChange"
+                            editable="{Header>/BankDataEnable}"  maxLength="{dataModel>/BankDataProperty/BankCountry/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="10rem">
+                    <Label wrapping="true"  text="Bank Key"/>
+                    <table:template>
+                        <Input value="{dataModel>BankKey}" 
+                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"  change=".onManualInputChange"
+                            editable="{Header>/BankDataEnable}"  maxLength="{dataModel>/BankDataProperty/BankKey/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column  width="15rem">
+                    <Label wrapping="true"  text="Bank Account Number"/>
+                    <table:template>
+                        <Input value="{dataModel>BankAccount}" 
+						editable="{Header>/BankDataEnable}"  
+						maxLength="{dataModel>/BankDataProperty/BankAccount/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+				 <table:Column  width="10rem">
+                    <Label wrapping="true"  text="Bank Control Key"/>
+                    <table:template>
+                        <Input value="{dataModel>BankControlKey}" editable="{Header>/BankDataEnable}"  
+						maxLength="{dataModel>/BankDataProperty/BankControlKey/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="10rem">
+                    <Label wrapping="true"  text="Partner bank type"/>
+                    <table:template>
+                        <Input value="{dataModel>BankType}" editable="{Header>/BankDataEnable}" 
+						maxLength="{dataModel>/BankDataProperty/BankType/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="8rem">
+                    <Label wrapping="true"  text="Indicator: Is there collection authorization ?"/>
+                    <table:template>
+                        <CheckBox  selected="{dataModel>Indicator}"  editable="{Header>/BankDataEnable}"  
+                        select="onselectbankcheckbox"  /> 
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="15rem">
+                    <Label wrapping="true"  text="Account Holder Name"/>
+                    <table:template>
+                        <Input value="{dataModel>AccountName}" editable="{Header>/BankDataEnable}"  
+						maxLength="{dataModel>/BankDataProperty/AccountName/maxLength}" /> 
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="15rem">
+                    <Label wrapping="true"  text="IBAN"/>
+                    <table:template>
+                        <Input value="{dataModel>Iban}" editable="{Header>/BankDataEnable}"  
+						maxLength="{dataModel>/BankDataProperty/Iban/maxLength}" /> 
+                    </table:template>
+                </table:Column>
+
+            </table:columns>
+
+        </table:Table>
+
+    </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+			
+ <!-- SECTION Certificates-->
+            <uxap:ObjectPageSection title="Certificates" titleUppercase="false" visible="{Header>/Certificates}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                           <VBox class="sapUiSmallMargin">
+                            <Toolbar class="sapUiTransparentToolbar">
+                                <Title text="Manage Certificates" level="H3" />
+                                <Label text="Enable Certificate" design="Bold"/>
+                                        <CheckBox   
+                                        select="onEditCertificates" 
+                                         enabled="{Header>/CertificatesCheckBox}" />
+
+                                <ToolbarSpacer />
+                                 <Button
+                                    text="Edit"
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    press=".onEditCertificates" visible="{Header>/CertificatesEdit}"/>
+                                <Button icon="sap-icon://add" text="Add Certificate" 
+                                type="Emphasized" press=".onAddCertificate" enabled="{Header>/CertificatesEnable}" />
+                            </Toolbar>
+
+                          
+                            <VBox items="{dataModel>/Certificates}">
+                                <Panel expandable="false" width="auto" class="sapUiNoContentPadding sapUiSmallMarginBottom">
+                                    <headerToolbar>
+                                        <Toolbar height="3rem" style="Clear">
+                                            <Title text="Certificate Details" />
+                                            <ToolbarSpacer />
+                                            <Button icon="sap-icon://delete" type="Reject" 
+                                            enabled="{Header>/CertificatesEnable}"
+                                            press=".onDeleteCertificate" tooltip="Remove this certificate" />
+                                        </Toolbar>
+                                    </headerToolbar>
+                                    <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                                    
+                                        <Label text="Country Comp" />
+                                        <Input value="{dataModel>CountryComp}" editable="{Header>/CertificatesEnable}" 
+                                         maxLength="{dataModel>/CertificatesProperty/CountryComp/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"/>
+
+                                        <Label text="Certificate ID" />
+                                        <Input value="{dataModel>CertificateID}" editable="{Header>/CertificatesEnable}"  
+                                        maxLength="{dataModel>/CertificatesProperty/CertificateID/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"/>
+
+                                        <Label text="Certificate No" />
+                                        <Input value="{dataModel>CertificateNo}" editable="{Header>/CertificatesEnable}"  
+                                        maxLength="{dataModel>/CertificatesProperty/CertificateNo/maxLength}" />
+
+                                        <Label text="Region City" />
+                                        <Input value="{dataModel>RegionCity}" editable="{Header>/CertificatesEnable}" 
+                                         maxLength="{dataModel>/CertificatesProperty/RegionCity/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"/>
+
+                                        <Label text="Certificate Valid From " />
+                                        <DatePicker value="{dataModel>CreditValidFrom}" editable="{Header>/CertificatesEnable}"   displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+                                        
+
+                                        <Label text="Certificate Valid To " />
+                                        <DatePicker id="CreditValidTo" value="{dataModel>CreditValidTo}" editable="{Header>/CertificatesEnable}"   
+										displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                                        <Label text="Cert Stat" />
+                                        <Input value="{dataModel>CertStat}" editable="{Header>/CertificatesEnable}"  
+                                        maxLength="{dataModel>/CertificatesProperty/CertStat/maxLength}" />
+
+                                        <Label text="Main Cert" />
+                                        <CheckBox  selected="{dataModel>MainCert}"
+                                        select="onselectMainCert" 
+                                         enabled="{Header>/CertificatesEnable}" />
+
+                                        <Label text="Exemption Type" />
+                                        <Input value="{dataModel>ExemptionType}" editable="{Header>/CertificatesEnable}"  
+                                        maxLength="{dataModel>/CertificatesProperty/ExemptionType/maxLength}" showValueHelp="true"  valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" placeholder="Required if Type = M" />
+
+                                        <Label text="Exempt Reason" />
+                                        <Input value="{dataModel>ExemptReason}" editable="{Header>/CertificatesEnable}" 
+                                         maxLength="{dataModel>/CertificatesProperty/ExemptReason/maxLength}" placeholder="Required if Type = M" />
+
+                                        <Label text="Date Of Issue" />
+                                        <DatePicker value="{dataModel>DateOfIssue}" editable="{Header>/CertificatesEnable}"   displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                                        <Label text="Description 1" />
+                                        <Input value="{dataModel>Description1}" editable="{Header>/CertificatesEnable}"  
+                                        maxLength="{dataModel>/CertificatesProperty/Description1/maxLength}" />
+
+                                        <Label text="Description 2" />
+                                        <Input value="{dataModel>Description2}" editable="{Header>/CertificatesEnable}"  
+                                        maxLength="{dataModel>/CertificatesProperty/Description2/maxLength}" />
+
+                                        <Label text="Date 1" />
+                                        <DatePicker value="{dataModel>Date1}" editable="{Header>/CertificatesEnable}"   displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                                        <Label text="Date 2" />
+                                        <DatePicker value="{dataModel>Date2}" editable="{Header>/CertificatesEnable}" displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                                        <Label text="Additional No 1" />
+                                        <Input value="{dataModel>AdditionalNo1}" editable="{Header>/CertificatesEnable}" 
+                                         maxLength="{dataModel>/CertificatesProperty/AdditionalNo1/maxLength}" />
+
+                                        <Label text="Additional No 2" />
+                                        <Input value="{dataModel>AdditionalNo2}" editable="{Header>/CertificatesEnable}" 
+                                         maxLength="{dataModel>/CertificatesProperty/AdditionalNo2/maxLength}" />
+                                    </form:SimpleForm>
+                                </Panel>
+                            </VBox>
+                        </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+
+    <!-- SECTION 2: COMPANY CODE -->
+            <uxap:ObjectPageSection title="Company Code Data" titleUppercase="false">
+                <uxap:subSections>
+                    
+                    <!-- Company Code -->
+                    <uxap:ObjectPageSubSection  titleUppercase="false" >
+                        <uxap:blocks>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                                    <Label text="Company Code" required="true" />
+                                    <Input value="{dataModel>/CompanyCodeData/CompanyCode}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/CompanyCode/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" />
+                                </form:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+
+                    <!-- Account Management -->
+                    <uxap:ObjectPageSubSection title="Account Management" titleUppercase="false" >
+                        <uxap:blocks>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                                    <Label text="Recon. Account" required="true" />
+                                    <Input value="{dataModel>/CompanyCodeData/ReconAccout}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/ReconAccout/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" />
+
+                                    <Label text="Head Office" />
+                                    <Input value="{dataModel>/CompanyCodeData/HeadOffice}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/HeadOffice/maxLength}" />
+
+                                    <Label text="Sort Key" required="true"/>
+                                    <Input value="{dataModel>/CompanyCodeData/SortKey}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/SortKey/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" />
+
+                                    <Label text="Planning Group" required="true" />
+                                    <Input value="{dataModel>/CompanyCodeData/PlanningGroup}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/PlanningGroup/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" />
+
+                                    <Label text="Previous Acc number" />
+                                    <Input value="{dataModel>/CompanyCodeData/PreviousAccnumber}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/PreviousAccnumber/maxLength}" />
+                                </form:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+
+                    <!-- Payment Data -->
+                    <uxap:ObjectPageSubSection title="Payment Data" titleUppercase="false" >
+                        <uxap:blocks>
+                           <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                                    <Label text="Payment Terms " required="true" />
+                                    <Input value="{dataModel>/CompanyCodeData/PaymenttermsC}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/PaymenttermsC/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" />
+
+                                    <!-- <Label text="Record Paymnt History" />
+                                    <CheckBox selected="{/RecordPaymntHistory}" enabled="{ui>/isEditable}" /> -->
+
+                                    <Label text="Payment Method"  required="true"/>
+                                    <Input value="{dataModel>/CompanyCodeData/PaymentMethod}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/PaymentMethod/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" />
+
+                                    <Label text="HouseBank" />
+                                    <Input value="{dataModel>/CompanyCodeData/HouseBank}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/HouseBank/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange"/>
+
+                                   <Label text="Check Double Inv." />
+                                    <CheckBox selected="{dataModel>/CompanyCodeData/ChkDoubleInv}" enabled="{ui>/isEditable}" />
+									
+                                </form:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+
+                    <!-- Dunning & Accounting -->
+                    <!-- <uxap:ObjectPageSubSection title="Dunning &amp; Accounting">
+                        <uxap:blocks>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                                    <Label text="Dunning Procedure" />
+                                    <Input value="{dataModel>/CompanyCodeData/DunningProcedure}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/DunningProcedure/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" placeholder="Defaults to 1000" />
+                                     
+                                    <Label text="Accounting Clerk" />
+                                    <Input value="{dataModel>/CompanyCodeData/AccountingClerk}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/AccountingClerk/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" />
+                                </form:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection> -->
+
+                    <!-- Insurance
+                    <uxap:ObjectPageSubSection title="Insurance">
+                        <uxap:blocks>
+                             <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                                    <Label text="Policy Number" />
+                                    <Input value="{dataModel>/CompanyCodeData/PolicyNumber}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/PolicyNumber/maxLength}" />
+
+                                    <Label text="Institution Number" />
+                                    <Input value="{dataModel>/CompanyCodeData/InstitutionNumber}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/InstitutionNumber/maxLength}" />
+
+                                    <Label text="Amount Insured" />
+                                    <Input value="{dataModel>/CompanyCodeData/AmountInsured}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/AmountInsured/maxLength}" />
+
+                                    <Label text="Valid To" />
+                                    <DatePicker value="{dataModel>/CompanyCodeData/ValidTo}" editable="{ui>/isEditable}"   displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd" />
+
+                                    <Label text="Lead Months" />
+                                    <Input value="{dataModel>/CompanyCodeData/LeadMonths}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/LeadMonths/maxLength}" />
+
+                                    <Label text="Deductible" />
+                                    <Input value="{dataModel>/CompanyCodeData/Deductible}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/Deductible/maxLength}" />
+
+                                     <Label text="Clrg With Vend" />
+                                    <CheckBox selected="{dataModel>/CompanyCodeData/ClrgWithVend}" enabled="{ui>/isEditable}" />
+
+                                     <Label text="Check Double Inv." />
+                                    <CheckBox selected="{dataModel>/CompanyCodeData/ChkDoubleInv}" enabled="{ui>/isEditable}" />
+                                </form:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection> -->
+
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+
+
+
+            <!-- Purchase Org Data -->
+            <uxap:ObjectPageSection title="Purchase Org Data" titleUppercase="false"  visible="{Header>/PurchaseOrgData}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection titleUppercase="false">
+                        <uxap:blocks>
+                        <VBox>
+                            <OverflowToolbar>
+                                <ToolbarSpacer/>
+                                <Button
+                                    text="Edit"
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    press=".onEditPurchaseOrg" visible="{Header>/PurchaseOrgDataEdit}"/>
+                            </OverflowToolbar>
+
+                             <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                             <Label text="Purchase Org."  />
+                            <Input value="{dataModel>/PurchaseOrgData/POrg}" editable="{Header>/PurchaseOrgDataEnable}" 
+                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"   change=".onManualInputChange"
+							 maxLength="{dataModel>/PurchaseOrgDataProperty/POrg/maxLength}"/>
+                            
+                            <Label text="Purchase order currency"  />
+                            <Input value="{dataModel>/PurchaseOrgData/Currency}" editable="{Header>/PurchaseOrgDataEnable}" 
+                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                              change=".onManualInputChange"
+							 maxLength="{dataModel>/PurchaseOrgDataProperty/Currency/maxLength}"/>
+
+                            <Label text="Terms of Payment Key"  />
+                            <Input value="{dataModel>/PurchaseOrgData/PaymentTerms}" editable="{Header>/PurchaseOrgDataEnable}"
+                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                              change=".onManualInputChange"
+								maxLength="{dataModel>/PurchaseOrgDataProperty/PaymentTerms/maxLength}"							/>
+
+                            <Label text="Incoterms (Part 1)"  />
+                            <Input value="{dataModel>/PurchaseOrgData/Incoterms1}" editable="{Header>/PurchaseOrgDataEnable}" 
+                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                              change=".onManualInputChange"
+							 maxLength="{dataModel>/PurchaseOrgDataProperty/Incoterms1/maxLength}"/>
+
+                            <Label text="Incoterms (Part 2)"  />
+                            <Input value="{dataModel>/PurchaseOrgData/IncotermsLocation}" editable="{Header>/PurchaseOrgDataEnable}"  
+                            
+                            maxLength="{dataModel>/PurchaseOrgDataProperty/Incoterms2/maxLength}" />
+
+                            <Label text="Indicator: GR-Based Invoice Verification"  />
+                            <CheckBox selected="{dataModel>/PurchaseOrgData/Indicator}" editable="{Header>/PurchaseOrgDataEnable}"   />
+
+                            <Label text="Group for Calculation Schema (Supplier)"  />
+                            <Input value="{dataModel>/PurchaseOrgData/Calculation}"
+                             editable="{Header>/PurchaseOrgDataEnable}" 
+                             showValueHelp="true" valueHelpRequest=".onValueHelpRequest"
+                             change=".onManualInputChange"
+                              maxLength="{dataModel>/PurchaseOrgDataProperty/Calculation/maxLength}" />
+                                </form:SimpleForm>
+                                </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+           
+
+           
+            
+            <uxap:ObjectPageSection title="Contact Person" titleUppercase="false" visible="{Header>/ContactDetails}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                            <VBox class="sapUiSmallMargin">
+                                <Toolbar class="sapUiTransparentToolbar">
+                                    <Title text="Contacts" level="H3" />
+                                     <Label text="Enable Contact" design="Bold"/>
+                                        <CheckBox   
+                                        select="onEditContacts" 
+                                         enabled="{Header>/ContactDetailsCheckBox}" />
+
+                                    <ToolbarSpacer />
+                                    <Button
+                                    text="Edit"
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    press=".onEditContacts" visible="{Header>/ContactDetailsEdit}"/>
+                                    <Button icon="sap-icon://add" text="Add Contact" type="Emphasized" press=".onAddContact" enabled="{Header>/ContactDetailsEnable}" />
+                                </Toolbar>
+                                
+                                <VBox items="{dataModel>/ContactPerson}">
+                                    <Panel expandable="false" width="auto" class="sapUiNoContentPadding sapUiSmallMarginBottom">
+                                        <headerToolbar>
+                                            <Toolbar height="3rem" style="Clear">
+                                                <ToolbarSpacer />
+                                                <Button icon="sap-icon://delete" type="Reject" press=".onDeleteContact" enabled="{Header>/ContactDetailsEnable}" tooltip="Remove this contact" />
+                                            </Toolbar>
+                                        </headerToolbar>
+                                        <form:SimpleForm
+                                            editable="true"
+                                            layout="ColumnLayout"
+                                            columnsXL="4"
+                                            columnsL="3"
+                                            columnsM="2"
+                                        >
+                                     
+                                            <Label
+                                                text="Contact Person"
+                                                visible="{= ${ui>/isChangeMode} === true || ${ui>/isDisplayMode} === true }"
+                                            />
+                                            <Input
+                                                value="{dataModel>Contact}"
+                                                visible="{= ${ui>/isChangeMode} === true || ${ui>/isDisplayMode} === true }"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <!-- <Label
+                                                text="Partner"
+                                            />
+                                            <Input
+                                                value="{dataModel>Partner}" 
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            /> -->
+ 
+                                            <Label text="Grouping" />
+                                            <Input
+                                                value="{dataModel>Grouping}"
+                                                enabled="{Header>/ContactDetailsGrouping}"
+                                            />
+                                            <Label text="Name 1" required="true"/>
+                                            <Input
+                                                value="{dataModel>Name1}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Name 2" required="true"/>
+                                            <Input
+                                                value="{dataModel>Name2}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Structure Group" />
+                                            <Input
+                                                value="{dataModel>StructureGroup}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                  
+                                        
+ 
+                                            <Label text="Function" />
+                                            <Input
+                                                value="{dataModel>PartnerFunction}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Department" />
+                                            <Input
+                                                value="{dataModel>Department}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Authority" />
+                                            <Input
+                                                value="{dataModel>Authority}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="VIP" />
+                                            <Input
+                                                value="{dataModel>Vip}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Valid From" />
+                                            <DatePicker
+                                                value="{dataModel>ValidFrom}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                displayFormat="dd-MM-yyyy"
+                                                valueFormat="yyyyMMdd"
+                                            />
+ 
+                                            <Label text="Valid To" />
+                                            <DatePicker
+                                                value="{dataModel>ValidTo}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd"  
+                                            />
+ 
+                                            <!-- Address & Communication -->
+                                            <Label text="Building" />
+                                            <Input
+                                                value="{dataModel>Building}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Street" />
+                                            <Input
+                                                value="{dataModel>Stret}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="District (City 2)" />
+                                            <Input
+                                                value="{dataModel>City2}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="City (City 1)" />
+                                            <Input
+                                                value="{dataModel>City1}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Postal Code" />
+                                            <Input
+                                                value="{dataModel>PostCode1}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="PO Box" />
+                                            <Input
+                                                value="{dataModel>PoBox}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Country" required="true"/>
+                                            <Input
+                                                value="{dataModel>Country}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Region" />
+                                            <Input
+                                                value="{dataModel>Region}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Language" />
+                                            <Input
+                                                value="{dataModel>Language}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                                showValueHelp="true"
+                                                valueHelpRequest=".onValueHelpRequest"
+                                                change=".onManualInputChange"
+                                            />
+ 
+                                            <Label text="Telephone" />
+                                            <Input
+                                                value="{dataModel>TelNumber}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Email" />
+                                            <Input
+                                                value="{dataModel>Email}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Fax Number" />
+                                            <Input
+                                                value="{dataModel>FaxNumber}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+ 
+                                            <Label text="Note" />
+                                            <Input
+                                                value="{dataModel>Note}"
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"
+                                            />
+                                        </form:SimpleForm>
+        
+
+        <!-- <Toolbar>
+            <Title text=""/>
+            <ToolbarSpacer/>
+            <Button text="Edit"
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    press=".onEditContacts" visible="{Header>/ContactDetailsEdit}"/>
+
+            <Button text="Add Row" icon="sap-icon://add" enabled="{Header>/ContactDetailsEnable}"
+                    press=".onAddRowContactbank"/>
+            <Button text="Delete Row" icon="sap-icon://delete" enabled="{Header>/ContactDetailsEnable}"
+                    press=".onDeleteRowContactbank"/>
+        </Toolbar>
+
+
+                                         <table:Table
+            id="employeeTable1"
+            rows="{dataModel>/ContactBankData}"
+            selectionMode="MultiToggle"
+            visibleRowCount="3">
+		
+	
+            <table:columns>
+
+                <table:Column width="8rem">
+                    <Label wrapping="true"  text="Bank Country/Region"/>
+                    <table:template>
+                        <Input value="{dataModel>BankCountry}" 
+                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"  change=".onManualInputChange"
+                            editable="{Header>/ContactDetailsEnable}"  maxLength="{dataModel>/ContactBankDataProperty/BankCountry/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column width="10rem">
+                    <Label wrapping="true"  text="Bank Key"/>
+                    <table:template>
+                        <Input value="{dataModel>BankKey}" 
+                            showValueHelp="true" valueHelpRequest=".onValueHelpRequest"  change=".onManualInputChange"
+                            editable="{Header>/ContactDetailsEnable}"  maxLength="{dataModel>/ContactBankDataProperty/BankKey/maxLength}" />
+                    </table:template>
+                </table:Column>
+
+                <table:Column  width="15rem">
+                    <Label wrapping="true"  text="Bank Account Number"/>
+                    <table:template>
+                        <Input value="{dataModel>BankAccount}" 
+						editable="{Header>/ContactDetailsEnable}"  
+						maxLength="{dataModel>/ContactBankDataProperty/BankAccount/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+				 <table:Column  width="10rem">
+                    <Label wrapping="true"  text="Bank Control Key"/>
+                    <table:template>
+                        <Input value="{dataModel>BankControlKey}" editable="{Header>/ContactDetailsEnable}"  
+						maxLength="{dataModel>/ContactBankDataProperty/BankControlKey/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="10rem">
+                    <Label wrapping="true"  text="Partner bank type"/>
+                    <table:template>
+                        <Input value="{dataModel>BankType}" editable="{Header>/ContactDetailsEnable}" 
+						maxLength="{dataModel>/ContactBankDataProperty/BankType/maxLength}" />
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="8rem">
+                    <Label wrapping="true"  text="Indicator: Is there collection authorization ?"/>
+                    <table:template>
+                        <CheckBox  selected="{dataModel>Indicator}"  editable="{Header>/ContactDetailsEnable}"  
+                        select="onselectbankcheckbox"  /> 
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="15rem">
+                    <Label wrapping="true"  text="Account Holder Name"/>
+                    <table:template>
+                        <Input value="{dataModel>AccountName}" editable="{Header>/ContactDetailsEnable}"  
+						maxLength="{dataModel>/ContactBankDataProperty/AccountName/maxLength}" /> 
+                    </table:template>
+                </table:Column>
+				
+				<table:Column  width="15rem">
+                    <Label wrapping="true"  text="IBAN"/>
+                    <table:template>
+                        <Input value="{dataModel>Iban}" editable="{Header>/ContactDetailsEnable}"  
+						maxLength="{dataModel>/ContactBankDataProperty/Iban/maxLength}" /> 
+                    </table:template>
+                </table:Column>
+
+            </table:columns>
+
+        </table:Table> -->
+
+                                    </Panel>
+                                </VBox>
+                            </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            
+            <!-- <uxap:ObjectPageSection title="Attachments &amp; Comments" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                            <VBox class="sapUiSmallMargin">
+                                <Title text="Upload Documents &amp; Add Comments" level="H3" class="sapUiTinyMarginBottom" />
+                                
+                                <Table id="attachmentTable" items="{ui>/pendingFiles}" noDataText="No documents available. Use the Add button to upload.">
+                                    <headerToolbar>
+                                        <Toolbar>
+                                            <ToolbarSpacer />
+                                            <u:FileUploader 
+                                                id="fileUploader" 
+                                                buttonOnly="true" 
+                                                buttonText="Add Files" 
+                                                icon="sap-icon://add" 
+                                                multiple="true" 
+                                                sameFilenameAllowed="true" 
+                                                change=".onFilesSelected" />
+                                        </Toolbar>
+                                    </headerToolbar>
+                                    <columns>
+                                        <Column><Label text="File Name" design="Bold" /></Column>
+                                        <Column><Label text="Comment for this File" design="Bold" /></Column>
+                                        <Column width="15%"><Label text="File Size" design="Bold" /></Column>
+                                        <Column width="10%" hAlign="End"><Label text="" /></Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem>
+                                            <cells>
+                                                <Text text="{ui>fileName}" />
+                                                <Input value="{ui>comment}" placeholder="Type a comment..." editable="{ui>/isEditable}" />
+                                                <Text text="{ui>fileSize}" />
+                                                <Button icon="sap-icon://decline" type="Transparent" press=".onRemoveFile" enabled="{ui>/isEditable}" />
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection> 
+                </uxap:subSections>
+            </uxap:ObjectPageSection>-->
+            
+        </uxap:sections>
+
+      
+        
+    </uxap:ObjectPageLayout>
+</core:FragmentDefinition>

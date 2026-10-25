@@ -12,8 +12,9 @@
 >
 
     <uxap:ObjectPageLayout id="ObjectPageLayout"
+		enableLazyLoading="true"
+		useIconTabBar="true"
 		showTitleInHeaderContent="true"
-		headerContentPinned="true"
 		upperCaseAnchorBar="false">
         
     <uxap:headerTitle  >
