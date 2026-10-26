@@ -23,6 +23,7 @@ sap.ui.define([
                 isEditable: true,
                 isValidated: false,
                 isChangeMode: true,
+                isSubmit:false,
                 header: true,
                 pendingFiles: []
             };
@@ -34,6 +35,7 @@ sap.ui.define([
             this.setTabVisibility();
             this.setUIModel("EX");
             this.oF4Mapping = this.setoF4Mapping();
+            this.getOwnerComponent().getModel("LocalModel").setProperty("/VendorName", "");
             this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestType", "EX");
             this.getOwnerComponent().getModel("LocalModel").refresh(true);
 
@@ -208,6 +210,7 @@ sap.ui.define([
                     var oViewModel = this.getView().getModel("ui");
                     oViewModel.setProperty("/isEditable", false);
                     oViewModel.setProperty("/isValidated", true);
+                    oViewModel.setProperty("/isSubmit",false);
 
                     // MessageToast.show("Validation Successful. Form locked. You can now Submit.");
 
@@ -229,6 +232,7 @@ sap.ui.define([
             var oViewModel = this.getView().getModel("ui");
             oViewModel.setProperty("/isEditable", true);
             oViewModel.setProperty("/isValidated", false);
+            oViewModel.setProperty("/isSubmit",false);
             oViewModel.refresh(true);
         },
 

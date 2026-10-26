@@ -18,6 +18,7 @@ sap.ui.define([
             var oViewModel = new JSONModel({
                 isEditable: true,
                 isValidated: false,
+                isSubmit:false,
                 pendingFiles: []
             });
             this.getView().setModel(oViewModel, "ui");
@@ -51,6 +52,7 @@ sap.ui.define([
             this.setTabVisibility();
             this.setUIModel("CR");
             this.oF4Mapping = this.setoF4Mapping();
+            this.getOwnerComponent().getModel("LocalModel").setProperty("/VendorName", "");
             this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestType", "CR");
             this.getOwnerComponent().getModel("LocalModel").refresh(true);
         },
@@ -151,7 +153,7 @@ sap.ui.define([
             var oBankDataModel = this.getView().getModel("dataModel").getData().BankData;
             var oContactPersonModel = this.getView().getModel("dataModel").getData().ContactPerson;
             var aRequiredFields_generaldata = [
-                "Grouping", "Name1", "Name2", "SearchTerm1", "BuildingCode", "Street", "District", "City", "PostalCode", "Region", "Country", "Language"
+                "HouseNumber","Grouping", "Name1", "Name2", "SearchTerm1", "BuildingCode", "Street", "District", "City", "PostalCode", "Region", "Country", "Language"
             ];
             var aRequiredFields_compcode = [
                 "CompanyCode", "ReconAccout", "PlanningGroup", "PaymenttermsC","SortKey","PaymentMethod"
@@ -289,6 +291,7 @@ sap.ui.define([
             var oViewModel = this.getView().getModel("ui");
             oViewModel.setProperty("/isEditable", true);
             oViewModel.setProperty("/isValidated", false);
+            oViewModel.setProperty("/isSubmit",false);
 
             this.getView().getModel("Header").getData().VendorCreateEnable = true;
             this.getView().getModel("Header").getData().VendorCreateGrouping = true;

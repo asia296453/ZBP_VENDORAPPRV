@@ -59,12 +59,7 @@
     <!-- Text shown ONLY in Create Mode -->
     <Text text="{ui>/RequestNo}" visible="{= !${ui>/isChangeMode} }" />
 </VBox>
-                
-                <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
-                    <Label text="Request Type" />
-                    <Text text="{LocalModel>/RequestType}" class="sapMObjectNumberText" />
-                </VBox>
-                
+  
                 <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
                     <Label text="Vendor No." visible="{= ${LocalModel>/RequestType} === 'CR' }"/>
                     <Text text="{= ${dataModel>/VendorCreate/Vendor} ? ${dataModel>/VendorCreate/Vendor} : 'Generated on Approval' }" 
@@ -73,8 +68,14 @@
 
                     <Label text="Vendor Name" visible="{= ${LocalModel>/RequestType} === 'CH' || ${LocalModel>/RequestType} === 'EX'}"/>
                     <Text text="{LocalModel>/VendorName}" 
-                    visible="{= ${LocalModel>/RequestType} === 'CH' }"
+                    visible="{= ${LocalModel>/RequestType} === 'CH' || ${LocalModel>/RequestType} === 'EX'}"
                     class="sapMObjectNumberText" />
+                </VBox>
+                
+                              
+                <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+                    <Label text="Request Type" />
+                    <Text text="{LocalModel>/RequestType}" class="sapMObjectNumberText" />
                 </VBox>
                 
                 <VBox class="sapUiSmallMarginBottom">
@@ -169,7 +170,10 @@
                         <uxap:blocks>
                             <form:SimpleForm editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
                             <form:content> 
-				
+
+                             <Label text="House Number" required="true" />
+                            <Input value="{dataModel>/VendorCreate/HouseNumber}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Street/maxLength}" />
+
                             <Label text="Street" required="true" />
                             <Input value="{dataModel>/VendorCreate/Street}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Street/maxLength}" />
 
@@ -859,14 +863,21 @@
                                                 value="{dataModel>Grouping}"
                                                 enabled="{Header>/ContactDetailsGrouping}"
                                             />
-                                            <Label text="Name 1" required="true"/>
+
+                                              <Label text="House Number"   />
+                                                <Input value="{dataModel>HouseNumber}" 
+                                                editable="{Header>/ContactDetailsEnable}"
+                                                enabled="{Header>/ContactDetailsEnable}"  />
+
+
+                                            <Label text="Name 1"  />
                                             <Input
                                                 value="{dataModel>Name1}"
                                                 editable="{Header>/ContactDetailsEnable}"
                                                 enabled="{Header>/ContactDetailsEnable}"
                                             />
  
-                                            <Label text="Name 2" required="true"/>
+                                            <Label text="Name 2" />
                                             <Input
                                                 value="{dataModel>Name2}"
                                                 editable="{Header>/ContactDetailsEnable}"
@@ -986,7 +997,7 @@
                                                 enabled="{Header>/ContactDetailsEnable}"
                                             />
  
-                                            <Label text="Country" required="true"/>
+                                            <Label text="Country"  />
                                             <Input
                                                 value="{dataModel>Country}"
                                                 editable="{Header>/ContactDetailsEnable}"

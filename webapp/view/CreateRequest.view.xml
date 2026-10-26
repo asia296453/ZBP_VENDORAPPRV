@@ -20,8 +20,8 @@
 				<ToolbarSpacer/>
 				<Button text="Validate" type="Accept" press=".onValidate" visible="{ui>/isEditable}" />
                 <Button text="Edit" type="Emphasized" press=".onEdit" visible="{ui>/isValidated}" />
-                <Button text="Save as Draft" type="Transparent" press=".onSaveDraft" visible="{ui>/isValidated}" />
-                <Button text="Submit" type="Emphasized" press=".onSubmitRequest" visible="{ui>/isValidated}" />
+                <Button text="Save as Draft" type="Transparent" press=".onSaveDraft" visible="{ui>/isSubmit}" />
+                <Button text="Submit" type="Emphasized" press=".onSubmitRequest" visible="{ui>/isSubmit}" />
                 <Button text="Cancel" type="Transparent" press=".onNavBack" />
 
 			</OverflowToolbar>

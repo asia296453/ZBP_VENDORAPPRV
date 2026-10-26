@@ -1097,8 +1097,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                     if (this.saction === 'V') {
                         if (oData.Message !== "") {
                             MessageBox.error(oData.Message);
+                            this.getView().getModel("ui").setProperty("/isSubmit", false);
                         } else {
                             MessageBox.success("Validation successfull");
+                            this.getView().getModel("ui").setProperty("/isSubmit", true);
                         }
                     }
                     if (oData.RequestNumber !== '' && this.saction !== 'V') {

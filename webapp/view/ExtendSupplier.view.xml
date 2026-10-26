@@ -19,7 +19,7 @@
 			<OverflowToolbar>
 				<ToolbarSpacer/>
 				<Button text="Validate" type="Accept" press=".onValidate" visible="{ui>/isEditable}" />
-                <!-- <Button text="Edit" type="Emphasized" press=".onEdit" visible="{= !${ui>/isEditable} }" /> -->
+                <Button text="Edit" type="Emphasized" press=".onEdit" visible="{= !${ui>/isEditable} }" />
                 <Button text="Save as Draft" type="Transparent" press=".onSaveDraft" visible="{ui>/isValidated}" />
                 <Button text="Submit" type="Emphasized" press=".onSubmitRequest" visible="{ui>/isValidated}" />
                 <Button text="Cancel" type="Transparent" press=".onNavBack" />
