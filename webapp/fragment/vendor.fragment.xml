@@ -13,7 +13,7 @@
 
     <uxap:ObjectPageLayout id="ObjectPageLayout"
 		enableLazyLoading="true"
-		useIconTabBar="true"
+		
 		showTitleInHeaderContent="true"
 		upperCaseAnchorBar="false">
         
