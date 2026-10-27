@@ -11,9 +11,8 @@
      xmlns:table="sap.ui.table">
     <Page title="" >
     <content>
-    <form:SimpleForm editable="true" layout="ResponsiveGridLayout"  >
-			 <core:Fragment fragmentName="zbpvendorapprv.fragment.vendor" type="XML"/>	
-	</form:SimpleForm>	
+    <core:Fragment fragmentName="zbpvendorapprv.fragment.vendor" type="XML"/>	
+     
 	</content>
 		<footer>
 			<OverflowToolbar>

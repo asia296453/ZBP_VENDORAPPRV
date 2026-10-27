@@ -174,7 +174,7 @@ sap.ui.define([
             // }
 
             if (bValid1) {
-                if (bValid) {
+                if (bValid && this.getView().getModel("Header").getData().VendorCreateEnable) {
                     for (var i = 0; i < aRequiredFields_generaldata.length; i++) {
                         if (!ogeneraldataModel[aRequiredFields_generaldata[i]] || ogeneraldataModel[aRequiredFields_generaldata[i]].toString().trim() === "") {
                             bValid = false;
@@ -199,7 +199,7 @@ sap.ui.define([
                         return;
                     }
                 }
-                if (bValid && opOrgModel["POrg"] !== '') {
+                if (bValid && opOrgModel["POrg"] !== '' && this.getView().getModel("HeaderCpy").getData().PurchaseOrgDataEnable)  {
                     for (var i = 0; i < aRequiredFields_POrg.length; i++) {
                         if (opOrgModel[aRequiredFields_POrg[i]] !== undefined && (!opOrgModel[aRequiredFields_POrg[i]]
                             || opOrgModel[aRequiredFields_POrg[i]].toString().trim() === "")) {
@@ -214,7 +214,7 @@ sap.ui.define([
                     }
                 }
 
-                if (bValid) {
+                if (bValid && this.getView().getModel("HeaderCpy").getData().BankDataEnable) {
                     for (var i = 0; i < oBankDataModel.length; i++) {
                         if (oBankDataModel[i].BankCountry !== undefined && oBankDataModel[i].BankCountry === "") {
                             bValid = false;
@@ -232,9 +232,9 @@ sap.ui.define([
                 }
 
                 if (bValid) {
-                    var oViewModel = this.getView().getModel("ui");
-                    oViewModel.setProperty("/isEditable", false);
-                    oViewModel.setProperty("/isValidated", true);
+                    // var oViewModel = this.getView().getModel("ui");
+                    // oViewModel.setProperty("/isEditable", false);
+                    // oViewModel.setProperty("/isValidated", true);
                     
 
                     // MessageToast.show("Validation Successful. Form locked. You can now Submit.");

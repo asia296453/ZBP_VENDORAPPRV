@@ -236,7 +236,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
         },
 
         setUIModel: function (stype) {
-            this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestNumber" ,"");
+            this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestNumber", "");
             var sServiceURL = "/sap/opu/odata/sap/ZBP_VENDOR_APPROVAL_SRV/";
             var oModel = new sap.ui.model.odata.v2.ODataModel(sServiceURL);
             var oDate = new Date(9999, 11, 31);
@@ -587,13 +587,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                                 }
                                 this.onReadOData("/VendorCreateSet(RequestNumber='" + sSelectedValue + "')", null).then((oresponse) => {
                                     this.getDescription(oresponse);
-                                    this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestNumber" ,this.getView().getModel("dataModel").getData().VendorCreate.RequestNumber);
-                                    
+                                    this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestNumber", this.getView().getModel("dataModel").getData().VendorCreate.RequestNumber);
+
                                     this.getView().getModel("dataModel").getData().VendorCreate.Status = 'DRAFT';
                                     this.getView().getModel("dataModel").getData().VendorCreate.RequestNumber = "";
                                     this.getView().getModel("dataModel").refresh(true);
 
-                                    
+
                                     this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestType", stype);
                                     this.getOwnerComponent().getModel("LocalModel").refresh(true);
                                 });
@@ -983,7 +983,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 }
             })
 
-            
+
             var oarrc = [];
             oarrc.push(oPayload.CompanyCode);
             oPayload.CompanyCode = oarrc;
@@ -1070,6 +1070,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 if (this.getView().getModel("HeaderCpy").getData().ContactDetailsEnable === false) {
                     delete oPayload.ContactDetails;
                 }
+
+                if (this.getView().getModel("HeaderCpy").getData().VendorCreateEnable === false) {
+                    Object.keys(oPayload).forEach(r => {
+                        if (Array.isArray(oPayload[r]) === false) {
+                            if (r !== "RequestNumber"
+                                && r !== "SaveAction"
+                                && r !== "Action"
+                                && r !== "Vendor") {
+                                oPayload[r] = "";
+                            }
+                        }
+                    })
+                }
+                delete oPayload.__metadata;
+                delete oPayload.ValidateData;
             }
 
             if (oPayload.CompanyCode[0].ChkDoubleInv === true) {
@@ -1097,9 +1112,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                     if (this.saction === 'V') {
                         if (oData.Message !== "") {
                             MessageBox.error(oData.Message);
+                            var oViewModel = this.getView().getModel("ui");
+                            oViewModel.setProperty("/isEditable", true);
+                            oViewModel.setProperty("/isValidated", true);
                             this.getView().getModel("ui").setProperty("/isSubmit", false);
                         } else {
                             MessageBox.success("Validation successfull");
+                            var oViewModel = this.getView().getModel("ui");
+                            oViewModel.setProperty("/isEditable", true);
+                            oViewModel.setProperty("/isValidated", true);
                             this.getView().getModel("ui").setProperty("/isSubmit", true);
                         }
                     }
@@ -1204,7 +1225,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 this.getView().getModel("dataModel").getData().VendorCreate.Status = 'DRAFT';
                 this.getView().getModel("dataModel").refresh(true);
 
-                this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestNumber" ,this.getView().getModel("dataModel").getData().VendorCreate.RequestNumber);
+                this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestNumber", this.getView().getModel("dataModel").getData().VendorCreate.RequestNumber);
                 var svl = this.getOwnerComponent().getModel("LocalModel").getData().RequestType;
                 this.getOwnerComponent().getModel("LocalModel").setProperty("/RequestType", svl);
                 this.getOwnerComponent().getModel("LocalModel").refresh(true);
