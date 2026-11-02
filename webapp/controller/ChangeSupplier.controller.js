@@ -148,7 +148,7 @@ sap.ui.define([
             var opOrgModel = this.getView().getModel("dataModel").getData().PurchaseOrgData;
             var oBankDataModel = this.getView().getModel("dataModel").getData().BankData;
             var aRequiredFields_generaldata = [
-                "HouseNumber","Grouping", "Name1", "Name2", "SearchTerm1", "BuildingCode", "Street", "District", "City", "PostalCode", "Region", "Country", "Language"
+                "HouseNumber","Grouping", "Name1", "Name2", "SearchTerm1",  "Street", "District", "City", "PostalCode", "Region", "Country", "Language"
             ];
             var aRequiredFields_compcode = [
                 "CompanyCode", "ReconAccout", "PlanningGroup", "PaymenttermsC"
@@ -280,6 +280,7 @@ sap.ui.define([
                     oModelcpy[Object.keys(oModelcpy)[i]] = "";
                 }
             }
+            oModelcpy.CreditValidTo = "9999-12-31";
             oModel.push(oModelcpy);
 
             this.getView().getModel("dataModel").setProperty("/Certificates", oModel);

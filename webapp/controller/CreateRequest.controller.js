@@ -153,7 +153,7 @@ sap.ui.define([
             var oBankDataModel = this.getView().getModel("dataModel").getData().BankData;
             var oContactPersonModel = this.getView().getModel("dataModel").getData().ContactPerson;
             var aRequiredFields_generaldata = [
-                "HouseNumber","Grouping", "Name1", "Name2", "SearchTerm1", "BuildingCode", "Street", "District", "City", "PostalCode", "Region", "Country", "Language"
+                "HouseNumber","Grouping", "Name1", "Name2", "SearchTerm1", "Street", "District", "City", "PostalCode", "Region", "Country", "Language"
             ];
             var aRequiredFields_compcode = [
                 "CompanyCode", "ReconAccout", "PlanningGroup", "PaymenttermsC","SortKey","PaymentMethod"

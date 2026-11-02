@@ -186,7 +186,7 @@
                             <Input value="{dataModel>/VendorCreate/City}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/City/maxLength}" />
 
 
- <Label text="Building Code" required="true" />
+ <Label text="Building Code"   />
                             <Input value="{dataModel>/VendorCreate/BuildingCode}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/BuildingCode/maxLength}" />
 
 

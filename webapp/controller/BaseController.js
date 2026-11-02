@@ -991,19 +991,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
             //BEGIN of remove the description SAUDI(SA) to SA
             var aF4Fields = Object.keys(this.oF4Mapping);
             aF4Fields.forEach(function (sField) {
-                if (typeof oPayload[sField] === "string" && oPayload[sField]) {
+                if (typeof oPayload[sField] === "string" && oPayload[sField] && oPayload[sField].indexOf("(") !== -1) {
                     oPayload[sField] = this._extractKey(oPayload[sField]);
                 }
             }.bind(this));
 
             Object.keys(oPayload.CompanyCode[0]).forEach(function (sField) {
-                if (typeof oPayload.CompanyCode[0][sField] === "string" && oPayload.CompanyCode[0][sField]) {
+                if (typeof oPayload.CompanyCode[0][sField] === "string"
+                     && oPayload.CompanyCode[0][sField] && oPayload.CompanyCode[0][sField].indexOf("(") !== -1 ) {
                     oPayload.CompanyCode[0][sField] = this._extractKey(oPayload.CompanyCode[0][sField]);
                 }
             }.bind(this));
 
             Object.keys(oPayload.PurchaseOrg[0]).forEach(function (sField) {
-                if (typeof oPayload.PurchaseOrg[0][sField] === "string" && oPayload.PurchaseOrg[0][sField]) {
+                if (typeof oPayload.PurchaseOrg[0][sField] === "string" && oPayload.PurchaseOrg[0][sField] 
+                    && oPayload.PurchaseOrg[0][sField].indexOf("(") !== -1) {
                     oPayload.PurchaseOrg[0][sField] = this._extractKey(oPayload.PurchaseOrg[0][sField]);
                 }
             }.bind(this));
@@ -1012,7 +1014,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 if (Array.isArray(oPayload[sTableKey])) {
                     oPayload[sTableKey].forEach(function (oRow) {
                         aF4Fields.forEach(function (sField) {
-                            if (typeof oRow[sField] === "string" && oRow[sField]) {
+                            if (typeof oRow[sField] === "string" && oRow[sField] 
+                                && oRow[sField].indexOf("(") !== -1) {
                                 oRow[sField] = this._extractKey(oRow[sField]);
                             }
                         }.bind(this));
@@ -1071,18 +1074,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                     delete oPayload.ContactDetails;
                 }
 
-                if (this.getView().getModel("HeaderCpy").getData().VendorCreateEnable === false) {
-                    Object.keys(oPayload).forEach(r => {
-                        if (Array.isArray(oPayload[r]) === false) {
-                            if (r !== "RequestNumber"
-                                && r !== "SaveAction"
-                                && r !== "Action"
-                                && r !== "Vendor") {
-                                oPayload[r] = "";
-                            }
-                        }
-                    })
-                }
+                // if (this.getView().getModel("HeaderCpy").getData().VendorCreateEnable === false) {
+                //     Object.keys(oPayload).forEach(r => {
+                //         if (Array.isArray(oPayload[r]) === false) {
+                //             if (r !== "RequestNumber"
+                //                 && r !== "SaveAction"
+                //                 && r !== "Action"
+                //                 && r !== "Vendor") {
+                //                 oPayload[r] = "";
+                //             }
+                //         }
+                //     })
+                // }
                 delete oPayload.__metadata;
                 delete oPayload.ValidateData;
             }
@@ -1236,6 +1239,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
             if (typeof vValue !== "string") {
                 return vValue;
             }
+            
             var aMatch = vValue.match(/\(([^()]+)\)$/);
             return aMatch ? aMatch[1].trim() : vValue.trim();
         },
@@ -1243,7 +1247,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
         onAddContact: function () {
             var oModel = this.getView().getModel("dataModel");
             var aContacts = oModel.getProperty("/ContactPerson") || [];
-            var ocpy = this.getModel("dataModelCpy").getData().ContactPerson[0];
+            var ocpy = JSON.parse(JSON.stringify(this.getModel("dataModelCpy").getData().ContactPerson[0]));
+            ocpy.ValidTo = "9999-12-31";
             aContacts.push(ocpy);
             oModel.setProperty("/ContactPerson", aContacts);
             oModel.refresh(true);
