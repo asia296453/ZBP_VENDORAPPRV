@@ -1,11 +1,13 @@
 <mvc:View controllerName="zbpvendorapprv.controller.InterfaceList"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     xmlns="sap.m"
     xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:fb="sap.ui.comp.filterbar.FilterBar"
     xmlns:smartTable="sap.ui.comp.smarttable">
     <Page id="interfaceListPage" title="Vendor Interface Requests" showNavButton="true" navButtonPress=".onNavBack">
         <content>
-<smartFilterBar:SmartFilterBar
+<!-- <smartFilterBar:SmartFilterBar
     id="smartFilterBar"
     entitySet="WorkflowStatusSet"
     persistencyKey="WorkflowFilter"
@@ -17,24 +19,202 @@
             key="RequestNumber"
             label="Request Number"
             visibleInAdvancedArea="true">
-
             <smartFilterBar:customControl>
-
                <Input
                   id="idRequestNumber"
                   placeholder="Select Request Number"
                   showValueHelp="true"
                   valueHelpOnly="true"
                   valueHelpRequest=".onRequestNumberF4"/>
+            </smartFilterBar:customControl>
+        </smartFilterBar:ControlConfiguration>
+
+
+        <smartFilterBar:ControlConfiguration
+            key="RequestType"
+            label="Request Type"
+            visibleInAdvancedArea="true">
+            <smartFilterBar:customControl>
+                  <ComboBox
+                id="RequestType1" 
+                selectedKey="{LocalModel>/RequestType1}">
+                <items>
+                    <core:Item key="CR" text="Create" />
+                    <core:Item key="CH" text="Change" />
+                    <core:Item key="EX" text="Extension" />
+                </items>
+            </ComboBox>
+            </smartFilterBar:customControl>
+        </smartFilterBar:ControlConfiguration>
+
+         <smartFilterBar:ControlConfiguration
+            key="Partner"
+            label="Supplier"
+            visibleInAdvancedArea="true">
+
+            <smartFilterBar:customControl>
+
+               <Input
+                  id="Partner1"
+                  value="{LocalModel>/Partner1}"  
+                    showValueHelp="true" 
+                    valueHelpOnly="true" 
+                    valueHelpRequest=".onValueHelpRequest"  
+                  placeholder="Select Supplier"/>
 
             </smartFilterBar:customControl>
 
         </smartFilterBar:ControlConfiguration>
 
+        <smartFilterBar:ControlConfiguration
+            key="RequestedDate"
+            label="Date of Creation"
+            visibleInAdvancedArea="true">
+            <smartFilterBar:customControl>
+                  <DatePicker
+                    id="RequestedDate"
+                    value="{LocalModel>/RequestedDate}"  
+                    placeholder="Select Date"
+                    displayFormat="dd-MM-yyyy"
+                    valueFormat="yyyy-MM-dd" />
+            </smartFilterBar:customControl>
+        </smartFilterBar:ControlConfiguration>
+
+    <smartFilterBar:ControlConfiguration
+            key="WFStatus"
+            label="Status"
+            visibleInAdvancedArea="true">
+            <smartFilterBar:customControl>
+                  <ComboBox
+                id="WFStatus" 
+                selectedKey="{LocalModel>/WFStatus}">
+                <items>
+                    <core:Item key="STARTED" text="STARTED" />
+                    <core:Item key="COMPLETED" text="COMPLETED" />
+                    <core:Item key="ERROR" text="ERROR" />
+                </items>
+            </ComboBox>
+            </smartFilterBar:customControl>
+        </smartFilterBar:ControlConfiguration>
     </smartFilterBar:controlConfiguration>
 
-</smartFilterBar:SmartFilterBar>
+</smartFilterBar:SmartFilterBar> -->
+<fb:FilterBar
+    id="filterBar"
+    clear="onClear"
+    useToolbar="true"
+    search=".onSearch"
+    filterChange=".onFilterChange"
+    showGoOnFB="true"
+    showClearOnFB="true"
+    xmlns:fb="sap.ui.comp.filterbar">
 
+    <fb:filterGroupItems>
+
+        <!-- Request Number -->
+        <fb:FilterGroupItem
+            name="RequestNumber"
+            label="Request Number"
+            groupName="Basic"
+            visibleInFilterBar="true">
+
+            <fb:control>
+                <Input
+                    id="idRequestNumber"
+                    placeholder="Select Request Number"
+                    showValueHelp="true"
+                    valueHelpOnly="true"
+                    valueHelpRequest=".onRequestNumberF4"/>
+            </fb:control>
+
+        </fb:FilterGroupItem>
+
+        <!-- Request Type -->
+        <fb:FilterGroupItem
+            name="RequestType"
+            label="Request Type"
+            groupName="Basic"
+            visibleInFilterBar="true">
+
+            <fb:control>
+                <ComboBox
+                    id="RequestType1"
+                    selectedKey="{LocalModel>/RequestType1}">
+
+                    <items>
+                        <core:Item key="CR" text="Create"/>
+                        <core:Item key="CH" text="Change"/>
+                        <core:Item key="EX" text="Extension"/>
+                    </items>
+
+                </ComboBox>
+            </fb:control>
+
+        </fb:FilterGroupItem>
+
+        <!-- Supplier -->
+        <fb:FilterGroupItem
+            name="Partner"
+            label="Supplier"
+            groupName="Basic"
+            visibleInFilterBar="true">
+
+            <fb:control>
+                <Input
+                    id="Partner1"
+                    value="{LocalModel>/Partner1}"
+                    showValueHelp="true"
+                    valueHelpOnly="true"
+                    valueHelpRequest=".onValueHelpRequest"
+                    placeholder="Select Supplier"/>
+            </fb:control>
+
+        </fb:FilterGroupItem>
+
+        <!-- Requested Date -->
+        <fb:FilterGroupItem
+            name="RequestedDate"
+            label="Date of Creation"
+            groupName="Basic"
+            visibleInFilterBar="true">
+
+            <fb:control>
+                <DatePicker
+                    id="RequestedDate"
+                    value="{LocalModel>/RequestedDate}"
+                    placeholder="Select Date"
+                    displayFormat="dd-MM-yyyy"
+                    valueFormat="yyyy-MM-dd"/>
+            </fb:control>
+
+        </fb:FilterGroupItem>
+
+        <!-- Workflow Status -->
+        <fb:FilterGroupItem
+            name="WFStatus"
+            label="Status"
+            groupName="Basic"
+            visibleInFilterBar="true">
+
+            <fb:control>
+                <ComboBox
+                    id="WFStatus"
+                    selectedKey="{LocalModel>/WFStatus}">
+
+                    <items>
+                        <core:Item key="STARTED" text="STARTED"/>
+                        <core:Item key="COMPLETED" text="COMPLETED"/>
+                        <core:Item key="ERROR" text="ERROR"/>
+                    </items>
+
+                </ComboBox>
+            </fb:control>
+
+        </fb:FilterGroupItem>
+
+    </fb:filterGroupItems>
+
+</fb:FilterBar>
             <smartTable:SmartTable
     id="smartTable"
     entitySet="WorkflowStatusSet"

@@ -396,6 +396,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 "Vendor": { set: "/VendorF4Set", key: "Vendor", fielddesc: "Name", description: "Name" },
                 "Contact": { set: "/PartnerF4Set", key: "Contact", returnProperty: "Partner", description: "Name", model: "ContactPerson", fielddesc: "PartnerFunctionDesc" },
                 "Partner": { set: "/PartnerF4Set", key: "Contact", returnProperty: "Partner", description: "Name", model: "ContactPerson", fielddesc: "PartnerFunctionDesc" },
+                "Partner1": { set: "/PartnerF4Set", key: "Partner1", returnProperty: "Partner", description: "Name", model: "LocalModel", fielddesc: "Name" },
                 "Authority": { set: "/AuthorityF4Set", key: "Authority", returnProperty: "Authority", model: "ContactPerson", fielddesc: "AuthorityDesc" },
                 "Department": { set: "/DepartmentF4Set", key: "Department", returnProperty: "Department", model: "ContactPerson", fielddesc: "DepartmentDesc" },
                 "Department": { set: "/DepartmentF4Set", key: "Department", returnProperty: "Department", model: "ContactPerson", fielddesc: "DepartmentDesc" },
@@ -558,8 +559,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                                 this.getView().getModel("dataModel").setProperty(oContext.sPath + "/" + smodelpath, sSelectedValue);
                                 this.getView().getModel("dataModel").refresh(true);
                             } else {
-                                this.getView().getModel("dataModel").getData()[smodelpath[1]][smodelpath[2]] = sSelectedValue;
-                                this.getView().getModel(smodelinput).refresh(true);
+                                if (smodelinput === "LocalModel") {
+                                    var sinvalue = this._extractKey(sSelectedValue);
+                                    this.getView().getModel("LocalModel").getData()[smodelpath[1]] = sinvalue;
+                                    this.getView().getModel(smodelinput).refresh(true);
+                                } else {
+                                    this.getView().getModel("dataModel").getData()[smodelpath[1]][smodelpath[2]] = sSelectedValue;
+                                    this.getView().getModel(smodelinput).refresh(true);
+                                }
                             }
                             // var oContext = oInput.getBindingContext();
                             // if (oContext) {
