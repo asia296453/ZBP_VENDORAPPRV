@@ -401,7 +401,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/routing/History", "sap
                 "Department": { set: "/DepartmentF4Set", key: "Department", returnProperty: "Department", model: "ContactPerson", fielddesc: "DepartmentDesc" },
                 "PartnerFunction": { set: "/FunctionF4Set", key: "PartnerFunction", returnProperty: "PartnerFunction", model: "ContactPerson", fielddesc: "PartnerFunctionDesc" },
                 "RelType": { set: "/RelTypeF4Set", key: "RelType", returnProperty: "RelKind", model: "ContactPerson", fielddesc: "RelTypeDesc" },
-                "Vip": { set: "/VipF4Set", key: "Vip", returnProperty: "Vip", model: "ContactPerson", fielddesc: "VipDesc" }
+                "Vip": { set: "/VipF4Set", key: "Vip", returnProperty: "Vip", model: "ContactPerson", fielddesc: "VipDesc" },
+                "HeadOffice": { set: "/PartnerF4Set", key: "HeadOffice", returnProperty: "Partner", description: "Name", model: "CompanyCodeData", fielddesc: "Name" }
             };
 
             return oF4Mapping;

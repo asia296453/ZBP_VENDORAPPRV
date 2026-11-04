@@ -232,6 +232,31 @@ sap.ui.define([
                 }
 
                 if (bValid) {
+                    for (var i = 0; i < oContactPersonModel.length; i++) {
+                        if (oContactPersonModel[i].Name1 !== undefined && oContactPersonModel[i].Name1 === "") {
+                            bValid = false;
+                            break;
+                        }
+                        else if (oContactPersonModel[i].Name2 !== undefined && oContactPersonModel[i].Name2 === "") {
+                            bValid = false;
+                            break;
+                        }
+                        else if (oContactPersonModel[i].Country !== undefined && oContactPersonModel[i].Country === "") {
+                            bValid = false;
+                            break;
+                        }
+                        else if (oContactPersonModel[i].HouseNumber !== undefined && oContactPersonModel[i].HouseNumber === "") {
+                            bValid = false;
+                            break;
+                        }
+                    }
+                }
+                if (!bValid) {
+                    MessageToast.show("Please fill in all mandatory fields (marked with *) for Contact Details.");
+                    return;
+                }
+                
+                if (bValid) {
                     // var oViewModel = this.getView().getModel("ui");
                     // oViewModel.setProperty("/isEditable", false);
                     // oViewModel.setProperty("/isValidated", true);

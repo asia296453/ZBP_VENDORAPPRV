@@ -645,7 +645,8 @@
                                     <Input value="{dataModel>/CompanyCodeData/ReconAccout}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/ReconAccout/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" />
 
                                     <Label text="Head Office" />
-                                    <Input value="{dataModel>/CompanyCodeData/HeadOffice}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/HeadOffice/maxLength}" />
+                                    <Input value="{dataModel>/CompanyCodeData/HeadOffice}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/HeadOffice/maxLength}" 
+                                    showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" />
 
                                     <Label text="Sort Key" required="true"/>
                                     <Input value="{dataModel>/CompanyCodeData/SortKey}" editable="{ui>/isEditable}"  maxLength="{dataModel>/CompanyCodeDataProperty/SortKey/maxLength}" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" change=".onManualInputChange" />
@@ -864,20 +865,20 @@
                                                 enabled="{Header>/ContactDetailsGrouping}"
                                             />
 
-                                              <Label text="House Number"   />
+                                              <Label text="House Number"   required="true" />
                                                 <Input value="{dataModel>HouseNumber}" 
                                                 editable="{Header>/ContactDetailsEnable}"
                                                 enabled="{Header>/ContactDetailsEnable}"  />
 
 
-                                            <Label text="Name 1"  />
+                                            <Label text="Name 1" required="true"  />
                                             <Input
                                                 value="{dataModel>Name1}"
                                                 editable="{Header>/ContactDetailsEnable}"
                                                 enabled="{Header>/ContactDetailsEnable}"
                                             />
  
-                                            <Label text="Name 2" />
+                                            <Label text="Name 2" required="true" />
                                             <Input
                                                 value="{dataModel>Name2}"
                                                 editable="{Header>/ContactDetailsEnable}"
@@ -997,7 +998,7 @@
                                                 enabled="{Header>/ContactDetailsEnable}"
                                             />
  
-                                            <Label text="Country"  />
+                                            <Label text="Country"  required="true" />
                                             <Input
                                                 value="{dataModel>Country}"
                                                 editable="{Header>/ContactDetailsEnable}"

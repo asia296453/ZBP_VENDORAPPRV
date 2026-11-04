@@ -15,13 +15,7 @@ sap.ui.define([
     return BaseController.extend("zbpvendorapprv.controller.CreateRequest", {
 
         onInit: function () {
-            var oViewModel = new JSONModel({
-                isEditable: true,
-                isValidated: false,
-                isSubmit:false,
-                pendingFiles: []
-            });
-            this.getView().setModel(oViewModel, "ui");
+            
 
             var oModel = new JSONModel(this._getInitialData());
             this.getView().setModel(oModel);
@@ -42,6 +36,14 @@ sap.ui.define([
             oRouter.getRoute("CreateRequestRoute").attachPatternMatched(this._onRouteMatched, this);
         },
         _onRouteMatched: function (oEvent) {
+            var oViewModel = new JSONModel({
+                isEditable: true,
+                isValidated: false,
+                isSubmit:false,
+                pendingFiles: []
+            });
+            this.getView().setModel(oViewModel, "ui");
+            
             this.getView().getModel("ErrorModel").setProperty("/", []);
             var oViewModel = this.getView().getModel("ui");
             oViewModel.setProperty("/isEditable", true);
@@ -167,7 +169,7 @@ sap.ui.define([
             ];
 
             var aRequiredFields_Contacts = [
-                "Name1", "Name2", "Country"
+                "Name1", "Name2", "Country","HouseNumber"
             ];
 
             var bValid = true;
@@ -240,28 +242,32 @@ sap.ui.define([
                     return;
                 }
 
-                //
-                //  if (bValid) {
-                //     for (var i = 0; i < oContactPersonModel.length; i++) {
-                //         if (oContactPersonModel[i].Name1 !== undefined && oContactPersonModel[i].Name1 === "") {
-                //             bValid = false;
-                //             break;
-                //         }
-                //         else if (oContactPersonModel[i].Name2 !== undefined && oContactPersonModel[i].Name2 === "") {
-                //             bValid = false;
-                //             break;
-                //         }
-                //         else if (oContactPersonModel[i].Country !== undefined && oContactPersonModel[i].Country === "") {
-                //             bValid = false;
-                //             break;
-                //         }
-                //     }
-                // }
-                // if (!bValid) {
-                //     MessageToast.show("Please fill in all mandatory fields (marked with *) for Contact Details.");
-                //     return;
-                // }
-                //
+                
+                 if (bValid) {
+                    for (var i = 0; i < oContactPersonModel.length; i++) {
+                        if (oContactPersonModel[i].Name1 !== undefined && oContactPersonModel[i].Name1 === "") {
+                            bValid = false;
+                            break;
+                        }
+                        else if (oContactPersonModel[i].Name2 !== undefined && oContactPersonModel[i].Name2 === "") {
+                            bValid = false;
+                            break;
+                        }
+                        else if (oContactPersonModel[i].Country !== undefined && oContactPersonModel[i].Country === "") {
+                            bValid = false;
+                            break;
+                        }
+                        else if (oContactPersonModel[i].HouseNumber !== undefined && oContactPersonModel[i].HouseNumber === "") {
+                            bValid = false;
+                            break;
+                        }
+                    }
+                }
+                if (!bValid) {
+                    MessageToast.show("Please fill in all mandatory fields (marked with *) for Contact Details.");
+                    return;
+                }
+                
 
                 if (bValid) {
                     var oViewModel = this.getView().getModel("ui");
