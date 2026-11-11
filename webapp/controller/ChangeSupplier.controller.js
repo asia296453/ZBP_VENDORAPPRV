@@ -147,6 +147,7 @@ sap.ui.define([
             var ocompcodeModel = this.getView().getModel("dataModel").getData().CompanyCodeData;
             var opOrgModel = this.getView().getModel("dataModel").getData().PurchaseOrgData;
             var oBankDataModel = this.getView().getModel("dataModel").getData().BankData;
+            var oContactPersonModel = this.getView().getModel("dataModel").getData().ContactPerson;
             var aRequiredFields_generaldata = [
                 "HouseNumber","Grouping", "Name1", "Name2", "SearchTerm1",  "Street", "District", "City", "PostalCode", "Region", "Country", "Language"
             ];
@@ -231,7 +232,7 @@ sap.ui.define([
                     return;
                 }
 
-                if (bValid) {
+                if (bValid && this.getView().getModel("HeaderCpy").getData().ContactDetailsEnable) {
                     for (var i = 0; i < oContactPersonModel.length; i++) {
                         if (oContactPersonModel[i].Name1 !== undefined && oContactPersonModel[i].Name1 === "") {
                             bValid = false;

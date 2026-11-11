@@ -183,8 +183,7 @@
                     id="RequestedDate"
                     value="{LocalModel>/RequestedDate}"
                     placeholder="Select Date"
-                    displayFormat="dd-MM-yyyy"
-                    valueFormat="yyyy-MM-dd"/>
+                    displayFormat="yyyy-MM-dd" valueFormat="yyyyMMdd"/>
             </fb:control>
 
         </fb:FilterGroupItem>
