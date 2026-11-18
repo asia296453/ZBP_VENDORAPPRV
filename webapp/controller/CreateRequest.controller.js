@@ -155,7 +155,7 @@ sap.ui.define([
             var oBankDataModel = this.getView().getModel("dataModel").getData().BankData;
             var oContactPersonModel = this.getView().getModel("dataModel").getData().ContactPerson;
             var aRequiredFields_generaldata = [
-                "HouseNumber","Grouping", "Name1", "Name2", "SearchTerm1", "Street", "District", "City", "PostalCode", "Region", "Country", "Language","Email"
+                "HouseNumber","Grouping", "Name1", "Name2", "SearchTerm1", "Street", "District", "City", "PostalCode", "Region", "Country", "Language" 
             ];
             var aRequiredFields_compcode = [
                 "CompanyCode", "ReconAccout", "PlanningGroup", "PaymenttermsC","SortKey","PaymentMethod"
@@ -196,6 +196,17 @@ sap.ui.define([
                         MessageToast.show("Please fill in all mandatory fields (marked with *)");
                         return;
                     }
+                    var sEmail = ogeneraldataModel.Email;
+                    if (sEmail && sEmail.trim() !== "") {
+
+    var oEmailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    if (!oEmailRegex.test(sEmail.trim())) {
+        MessageToast.show("Please enter a valid Email ID.");
+        return;
+    }
+}
+
                 }
                 if (bValid) {
                     for (var i = 0; i < aRequiredFields_compcode.length; i++) {

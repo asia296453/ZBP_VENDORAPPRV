@@ -150,7 +150,7 @@
                             <Label text="Telephone" />
                             <Input value="{dataModel>/VendorCreate/Telephone}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Telephone/maxLength}" />
 
-                            <Label text="Email" required="true"/>
+                            <Label text="Email"  />
                             <Input value="{dataModel>/VendorCreate/Email}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Email/maxLength}" />
 
                             <Label text="Fax" />
