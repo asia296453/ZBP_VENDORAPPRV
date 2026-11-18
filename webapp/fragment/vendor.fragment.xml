@@ -151,7 +151,7 @@
                             <Input value="{dataModel>/VendorCreate/Telephone}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Telephone/maxLength}" />
 
                             <Label text="Email"  />
-                            <Input value="{dataModel>/VendorCreate/Email}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Email/maxLength}" />
+                            <Input id="idEmail" value="{dataModel>/VendorCreate/Email}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Email/maxLength}" />
 
                             <Label text="Fax" />
                             <Input value="{dataModel>/VendorCreate/Fax}" editable="{Header>/VendorCreateEnable}" maxLength="{dataModel>/VendorCreateProperty/Fax/maxLength}" />

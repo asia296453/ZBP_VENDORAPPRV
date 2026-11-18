@@ -196,17 +196,18 @@ sap.ui.define([
                         MessageToast.show("Please fill in all mandatory fields (marked with *)");
                         return;
                     }
-                    var sEmail = ogeneraldataModel.Email;
-                    if (sEmail && sEmail.trim() !== "") {
-
-    var oEmailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
-    if (!oEmailRegex.test(sEmail.trim())) {
-        MessageToast.show("Please enter a valid Email ID.");
-        return;
-    }
-}
-
+                  var sEmail = ogeneraldataModel.Email;
+                   var oEmailInput = this.byId("idEmail");
+                  if (sEmail && sEmail.trim() !== "") {
+                  var oRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+                     if (!oRegex.test(sEmail.trim())) {
+                   oEmailInput.setValueState("Error");
+                   oEmailInput.setValueStateText("Please enter a valid email address.");
+                    oEmailInput.focus();
+                    return;
+                    }
+                   oEmailInput.setValueState("None");
+                    }  
                 }
                 if (bValid) {
                     for (var i = 0; i < aRequiredFields_compcode.length; i++) {
